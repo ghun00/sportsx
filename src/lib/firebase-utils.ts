@@ -1,37 +1,26 @@
 import { 
   collection, 
   doc, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  getDoc, 
   getDocs, 
   query, 
-  where, 
   orderBy, 
   limit, 
   startAfter,
   serverTimestamp,
-  Timestamp,
   DocumentSnapshot,
   QueryDocumentSnapshot,
   QueryConstraint
 } from 'firebase/firestore';
 import { db } from './firebase-config';
 import { 
-  User, 
-  Article, 
-  UserLike, 
-  Category, 
-  AdminLog,
   PaginationParams,
   PaginatedResponse
 } from '@/types';
 
 // 타임스탬프 변환 유틸리티
-export const convertTimestamp = (timestamp: any): Date => {
-  if (timestamp?.toDate) {
-    return timestamp.toDate();
+export const convertTimestamp = (timestamp: unknown): Date => {
+  if (timestamp && typeof timestamp === 'object' && 'toDate' in timestamp) {
+    return (timestamp as { toDate: () => Date }).toDate();
   }
   if (timestamp instanceof Date) {
     return timestamp;
@@ -63,15 +52,11 @@ export const createPaginatedQuery = (
 ) => {
   const { limit: pageLimit = 20, lastDoc } = paginationParams || {};
   
-  let queryConstraints = [...constraints];
-  
-  if (pageLimit > 0) {
-    queryConstraints.push(limit(pageLimit + 1)); // 하나 더 가져와서 hasMore 판단
-  }
-  
-  if (lastDoc) {
-    queryConstraints.push(startAfter(lastDoc));
-  }
+  const queryConstraints = [
+    ...constraints,
+    ...(pageLimit > 0 ? [limit(pageLimit + 1)] : []), // 하나 더 가져와서 hasMore 판단
+    ...(lastDoc ? [startAfter(lastDoc)] : [])
+  ];
   
   return query(collection(db, collectionName), ...queryConstraints);
 };

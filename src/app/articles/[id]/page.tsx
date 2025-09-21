@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { Article } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLogin } from '@/contexts/LoginContext';
+import { useUserActivity } from '@/contexts/UserActivityContext';
 
 interface ArticlePageProps {
   params: {
@@ -28,6 +29,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
   const [loading, setLoading] = useState(true);
   const { isLoggedIn } = useAuth();
   const { openLoginPopup } = useLogin();
+  const { incrementArticleView } = useUserActivity();
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -48,15 +50,20 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         const liked = await isArticleLiked(articleData.id);
         setIsLiked(liked);
         
-        // 조회수 증가
-        await incrementViewCount(articleData.id);
-        
-        // 페이지 로드 애니메이션
-        const timer = setTimeout(() => {
-          setIsPageLoaded(true);
-        }, 100);
-        
-        return () => clearTimeout(timer);
+                // 조회수 증가
+                await incrementViewCount(articleData.id);
+                
+                // 사용자 활동 추적 (로그인하지 않은 사용자만)
+                if (!isLoggedIn) {
+                  incrementArticleView();
+                }
+                
+                // 페이지 로드 애니메이션
+                const timer = setTimeout(() => {
+                  setIsPageLoaded(true);
+                }, 100);
+                
+                return () => clearTimeout(timer);
       } catch (error) {
         console.error('아티클 로드 실패:', error);
         notFound();

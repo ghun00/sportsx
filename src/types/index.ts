@@ -59,13 +59,13 @@ export interface AdminLog {
   action: 'create' | 'update' | 'delete';
   target: 'article' | 'user' | 'category';
   targetId: string;
-  changes: Record<string, any>;
+  changes: Record<string, unknown>;
   createdAt: Date;
   ip: string;
 }
 
 // API 응답 타입
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -82,12 +82,12 @@ export interface LikeToggleResponse {
 export interface PaginationParams {
   page?: number;
   limit?: number;
-  lastDoc?: any; // Firestore DocumentSnapshot
+  lastDoc?: unknown; // Firestore DocumentSnapshot
 }
 
 export interface PaginatedResponse<T> {
   data: T[];
   hasMore: boolean;
-  lastDoc?: any;
+  lastDoc?: unknown;
   total?: number;
 }

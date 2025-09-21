@@ -156,6 +156,24 @@ export default function Home() {
             <p className="text-lg font-light" style={{ color: 'var(--muted)' }}>
               해외 스포츠 산업의 흐름을 한국어로 읽다
             </p>
+            
+            {/* 피드백 링크 */}
+            <div className="mt-6">
+              <a
+                href="https://sportsx.channel.io/home"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 rounded-lg"
+                style={{ 
+                  color: 'var(--blue)',
+                  backgroundColor: 'rgba(47, 128, 237, 0.1)',
+                  border: '1px solid rgba(47, 128, 237, 0.2)'
+                }}
+              >
+                💬 개선사항 피드백 보내기
+              </a>
+            </div>
+            
             <p className="text-sm mt-4" style={{ color: 'var(--muted)', opacity: 0.7 }}>
               &copy; 2025 스포츠엑스. All rights reserved.
             </p>

@@ -28,8 +28,10 @@ export default function LikedArticlesPage() {
             // 좋아요한 아티클들을 개별적으로 조회
             const articlePromises = likedIds.map(id => getArticleById(id));
             
-            const articles = (await Promise.all(articlePromises)).filter(Boolean) as Article[];
-            console.log('🔍 조회된 아티클들:', articles);
+            const articles = (await Promise.all(articlePromises))
+              .filter(Boolean)
+              .filter(article => article && article.status !== 'archived') as Article[];
+            console.log('🔍 조회된 아티클들 (archived 제외):', articles);
             setLikedArticles(articles);
           } else {
             console.log('🔍 좋아요한 아티클이 없음');

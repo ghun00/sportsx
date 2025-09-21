@@ -3,6 +3,7 @@
 import { LoginProvider, useLogin } from "@/contexts/LoginContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { AdminProvider } from "@/contexts/AdminContext";
+import { UserActivityProvider } from "@/contexts/UserActivityContext";
 import LoginPopup from "@/components/LoginPopup";
 
 function ClientLayoutInner({ children }: { children: React.ReactNode }) {
@@ -21,7 +22,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <AuthProvider>
       <AdminProvider>
         <LoginProvider>
-          <ClientLayoutInner>{children}</ClientLayoutInner>
+          <UserActivityProvider>
+            <ClientLayoutInner>{children}</ClientLayoutInner>
+          </UserActivityProvider>
         </LoginProvider>
       </AdminProvider>
     </AuthProvider>

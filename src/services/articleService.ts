@@ -1,9 +1,5 @@
 import { 
-  collection, 
-  doc, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
+  setDoc, 
   getDoc, 
   getDocs, 
   query, 
@@ -11,7 +7,7 @@ import {
   orderBy, 
   limit as limitQuery,
   startAfter,
-  serverTimestamp,
+  updateDoc,
   increment
 } from 'firebase/firestore';
 import { Article } from '@/types';
@@ -78,20 +74,14 @@ export class ArticleService {
     try {
       const { limit: pageLimit = 20 } = paginationParams || {};
       
-      let constraints = [];
-      
-      // 상태 필터링
-      if (status !== 'all') {
-        constraints.push(where('status', '==', status));
-      }
-      
-      // 카테고리 필터링
-      if (category && category !== '전체') {
-        constraints.push(where('categories', 'array-contains', category));
-      }
-      
-      // 정렬 (최신순)
-      constraints.push(orderBy('published_at', 'desc'));
+      const constraints = [
+        // 상태 필터링
+        ...(status !== 'all' ? [where('status', '==', status)] : []),
+        // 카테고리 필터링
+        ...(category && category !== '전체' ? [where('categories', 'array-contains', category)] : []),
+        // 정렬 (최신순)
+        orderBy('published_at', 'desc')
+      ];
       
       const q = createPaginatedQuery('articles', constraints, paginationParams);
       const querySnapshot = await getDocs(q);

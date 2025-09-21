@@ -18,8 +18,11 @@ export default function MyPage() {
     const likedIds = getLikedArticles();
     setLikedArticleIds(likedIds);
 
-    // ID로 실제 아티클 데이터 가져오기
-    const articles = likedIds.map(id => getArticleById(id)).filter(Boolean);
+    // ID로 실제 아티클 데이터 가져오기 (archived 상태 제외)
+    const articles = likedIds
+      .map(id => getArticleById(id))
+      .filter(Boolean)
+      .filter(article => article && article.status !== 'archived');
     setLikedArticles(articles);
   }, []);
 
@@ -27,7 +30,10 @@ export default function MyPage() {
   const handleLikeChange = () => {
     const likedIds = getLikedArticles();
     setLikedArticleIds(likedIds);
-    const articles = likedIds.map(id => getArticleById(id)).filter(Boolean);
+    const articles = likedIds
+      .map(id => getArticleById(id))
+      .filter(Boolean)
+      .filter(article => article && article.status !== 'archived');
     setLikedArticles(articles);
   };
 

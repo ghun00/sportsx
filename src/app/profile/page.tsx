@@ -106,8 +106,25 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* 추후 확장 영역 */}
+          {/* 피드백 버튼 */}
           <div className="mt-8 text-center">
+            <a
+              href="https://sportsx.channel.io/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-3 text-base font-medium transition-all duration-200 hover:scale-105 rounded-lg"
+              style={{ 
+                color: 'white',
+                backgroundColor: 'var(--blue)',
+                border: '1px solid var(--blue)'
+              }}
+            >
+              💬 개선사항 피드백 보내기
+            </a>
+          </div>
+
+          {/* 추후 확장 영역 */}
+          <div className="mt-6 text-center">
             <p style={{ color: 'var(--muted)' }}>
               더 많은 기능이 곧 추가될 예정입니다
             </p>

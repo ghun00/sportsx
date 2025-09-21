@@ -67,20 +67,28 @@ export default function AppBar({ className }: AppBarProps) {
                   />
                 </Link>
 
-                {/* 프로필 */}
-                <Link
-                  href="/profile"
-                  className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
-                  title="프로필"
-                >
-                  <User 
-                    className="w-6 h-6 sm:w-8 sm:h-8" 
-                    style={{ 
-                      color: getIconColor('/profile'),
-                      fill: pathname === '/profile' ? '#ffffff' : 'none'
-                    }} 
-                  />
-                </Link>
+                {/* 프로필 (말풍선 포함) */}
+                <div className="relative">
+                  <Link
+                    href="/profile"
+                    className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
+                    title="프로필"
+                  >
+                    <User 
+                      className="w-6 h-6 sm:w-8 sm:h-8" 
+                      style={{ 
+                        color: getIconColor('/profile'),
+                        fill: pathname === '/profile' ? '#ffffff' : 'none'
+                      }} 
+                    />
+                  </Link>
+                  
+                  {/* 말풍선 */}
+                  <div className="absolute -top-2 -right-2 w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                  <div className="absolute -top-1 -right-8 bg-blue-500 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity duration-200">
+                    피드백은 여기서!
+                  </div>
+                </div>
 
                 {/* 로그아웃 */}
                 <button
@@ -99,13 +107,36 @@ export default function AppBar({ className }: AppBarProps) {
               </>
             ) : (
               // 로그인 전 메뉴
-              <button
-                onClick={openLoginPopup}
-                className="px-4 py-2 text-lg font-medium transition-all duration-200 hover:scale-105"
-                style={{ color: 'var(--text)' }}
-              >
-                로그인
-              </button>
+              <>
+                {/* 피드백 링크 (로그인 전에만 표시) */}
+                <a
+                  href="https://sportsx.channel.io/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium transition-all duration-200 hover:scale-105 hidden sm:block"
+                  style={{ color: 'var(--muted)' }}
+                >
+                  피드백 남기기
+                </a>
+                
+                <a
+                  href="https://sportsx.channel.io/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-medium transition-all duration-200 hover:scale-105 block sm:hidden"
+                  style={{ color: 'var(--muted)' }}
+                >
+                  피드백
+                </a>
+
+                <button
+                  onClick={openLoginPopup}
+                  className="px-4 py-2 text-lg font-medium transition-all duration-200 hover:scale-105"
+                  style={{ color: 'var(--text)' }}
+                >
+                  로그인
+                </button>
+              </>
             )}
           </nav>
         </div>
