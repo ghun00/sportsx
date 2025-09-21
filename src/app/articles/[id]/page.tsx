@@ -202,7 +202,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           {/* AI 3줄 요약 */}
           <section className={`mb-8 transition-all duration-600 delay-800 ${isPageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--text)' }}>AI 3줄 요약</h2>
-            <div className="p-6 rounded-lg border transition-all duration-700 delay-900" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--border)' }}>
+            <div className="p-6 rounded-lg border transition-all duration-700 delay-900 summary-content" style={{ backgroundColor: 'var(--panel)', borderColor: 'var(--border)' }}>
               <ul className="space-y-3">
                 {article.summary_kr.map((point, index) => (
                   <li key={index} className={`flex items-start transition-all duration-500 ${isPageLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`} style={{ transitionDelay: `${1000 + index * 100}ms` }}>

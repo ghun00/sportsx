@@ -101,8 +101,23 @@ html {
 /* 상세 페이지 본문 반응형 폰트 크기 */
 @media (min-width: 640px) {
   .article-content {
-    font-size: 18px !important;
+    font-size: 20px !important;
   }
+  
+  /* AI 3줄 요약 폰트 크기 */
+  .article-content .summary-content {
+    font-size: 20px !important;
+  }
+}
+
+/* 본문 p 태그 간격 조정 */
+.article-content p {
+  margin-bottom: 1rem; /* 기본 간격의 2배 */
+}
+
+/* AI 3줄 요약 p 태그 간격 */
+.summary-content p {
+  margin-bottom: 1rem;
 }
 
 /* Tiptap 에디터 제목 스타일 */

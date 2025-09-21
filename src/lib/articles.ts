@@ -73,7 +73,7 @@ export async function getAllCategories(): Promise<string[]> {
     return await ArticleService.getAllCategories();
   } catch (error) {
     console.error('카테고리 목록 조회 실패:', error);
-    return ['전체', '스포츠산업', '데이터', '기타']; // 기본 카테고리
+    return ['전체', '스포츠산업', '마케팅 & 팬덤', '미디어 & 콘텐츠', '데이터 & 분석', '테크 & 혁신', '커리어 & 인재', '글로벌 트렌드', '기타']; // 기본 카테고리
   }
 }
 

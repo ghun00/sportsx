@@ -34,7 +34,13 @@ async function migrateArticles() {
         image: article.image,
         source: article.source,
         source_url: article.source_url,
-        categories: article.categories,
+        categories: article.categories.map(cat => {
+          // 기존 카테고리를 새로운 카테고리로 매핑
+          if (cat === '데이터') return '데이터 & 분석';
+          if (cat === '스포츠산업') return '스포츠산업';
+          if (cat === '기타') return '기타';
+          return cat; // 기타는 그대로 유지
+        }),
         published_at: new Date(article.published_at),
         status: 'published' as const,
         viewCount: 0,
