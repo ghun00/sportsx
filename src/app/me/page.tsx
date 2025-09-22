@@ -10,7 +10,7 @@ import { getLikedArticles } from '@/lib/likes';
 import { getArticleById } from '@/lib/articles';
 
 export default function MyPage() {
-  const [likedArticleIds, setLikedArticleIds] = useState<string[]>([]);
+  const [, setLikedArticleIds] = useState<string[]>([]);
   const [likedArticles, setLikedArticles] = useState<Article[]>([]);
 
   useEffect(() => {
@@ -26,16 +26,6 @@ export default function MyPage() {
     setLikedArticles(articles);
   }, []);
 
-  // 좋아요 상태가 변경될 때 리렌더링을 위한 함수
-  const handleLikeChange = () => {
-    const likedIds = getLikedArticles();
-    setLikedArticleIds(likedIds);
-    const articles = likedIds
-      .map(id => getArticleById(id))
-      .filter(Boolean)
-      .filter(article => article && article.status !== 'archived');
-    setLikedArticles(articles);
-  };
 
   return (
     <div className="min-h-screen bg-sx-bg">

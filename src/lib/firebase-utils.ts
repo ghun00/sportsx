@@ -1,9 +1,7 @@
 import { 
   collection, 
   doc, 
-  getDocs, 
   query, 
-  orderBy, 
   limit, 
   startAfter,
   serverTimestamp,

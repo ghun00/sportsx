@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import AppBar from '@/components/AppBar';
 import Hero from '@/components/Hero';
 import CategoryChips from '@/components/CategoryChips';

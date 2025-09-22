@@ -1,5 +1,4 @@
 import { 
-  doc, 
   setDoc, 
   getDoc, 
   updateDoc,
@@ -24,7 +23,6 @@ export class LikeService {
   // 좋아요 토글
   static async toggleLike(userId: string, articleId: string): Promise<LikeToggleResponse> {
     try {
-      const likeId = `${userId}_${articleId}`;
       const likeRef = getUserLikeRef(userId, articleId);
       const likeDoc = await getDoc(likeRef);
       

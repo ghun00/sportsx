@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
 import LikeButton from '@/components/LikeButton';
 import { Article, formatPublishedDate } from '@/lib/articles';
 import { cn } from '@/lib/utils';

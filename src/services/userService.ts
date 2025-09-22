@@ -1,5 +1,4 @@
 import { 
-  doc, 
   setDoc, 
   getDoc, 
   updateDoc, 

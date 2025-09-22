@@ -5,7 +5,7 @@ const KAKAO_CLIENT_SECRET = process.env.KAKAO_CLIENT_SECRET;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
 // 카카오 인증 URL 생성
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     if (!KAKAO_CLIENT_ID || !REDIRECT_URI) {
       return NextResponse.json(

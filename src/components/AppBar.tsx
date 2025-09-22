@@ -14,7 +14,7 @@ interface AppBarProps {
 
 export default function AppBar({ className }: AppBarProps) {
   const { openLoginPopup } = useLogin();
-  const { user, isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const pathname = usePathname();
 
   const handleLogout = async () => {

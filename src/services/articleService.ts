@@ -1,12 +1,10 @@
 import { 
-  setDoc, 
   getDoc, 
   getDocs, 
   query, 
   where, 
   orderBy, 
   limit as limitQuery,
-  startAfter,
   updateDoc,
   increment
 } from 'firebase/firestore';

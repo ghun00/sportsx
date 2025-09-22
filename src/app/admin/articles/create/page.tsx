@@ -7,7 +7,6 @@ import AppBar from '@/components/AppBar';
 import AdminGuard from '@/components/AdminGuard';
 import SimpleEditor from '@/components/SimpleEditor';
 import { ArticleService } from '@/services/articleService';
-import { useAuth } from '@/contexts/AuthContext';
 import { useAdmin } from '@/contexts/AdminContext';
 
 const AVAILABLE_CATEGORIES = [
@@ -23,7 +22,6 @@ const AVAILABLE_CATEGORIES = [
 
 export default function CreateArticlePage() {
   const router = useRouter();
-  const { user } = useAuth();
   const { isAdminAuthenticated } = useAdmin();
   const [formData, setFormData] = useState({
     title_kr: '',
@@ -61,13 +59,6 @@ export default function CreateArticlePage() {
     handleInputChange('summary_kr', newSummary);
   };
 
-  const generateId = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9가-힣\s]/g, '')
-      .replace(/\s+/g, '-')
-      .substring(0, 50);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

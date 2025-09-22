@@ -73,7 +73,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     };
 
     loadArticle();
-  }, [params.id]);
+  }, [params.id, incrementArticleView, isLoggedIn]);
 
   const handleLikeToggle = async () => {
     if (!article) return;
