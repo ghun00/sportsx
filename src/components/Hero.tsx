@@ -55,22 +55,13 @@ export default function Hero({ className }: HeroProps) {
           transform: 'translate(-50%, -50%)',
           zIndex: 1, // 타이틀과 CTA 버튼보다 뒤로
           opacity: 0.15, // 투명도 조절
-          filter: 'blur(1px)' // 부드러운 효과
+          filter: 'blur(1px)', // 부드러운 효과
+          backgroundImage: `url('/earth.png'), url('https://sportsx.vercel.app/earth.png')`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center'
         }}
-      >
-        <Image
-          src="/earth.png"
-          alt="Earth background"
-          width={480}
-          height={480}
-          style={{
-            objectFit: 'contain'
-          }}
-          priority
-          onLoad={() => console.log('✅ Earth image loaded successfully')}
-          onError={(e) => console.error('❌ Earth image failed to load:', e)}
-        />
-      </div>
+      />
       
       {/* 배경 그라디언트 */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
