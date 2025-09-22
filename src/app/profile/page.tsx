@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { User } from 'lucide-react';
 import AppBar from '@/components/AppBar';
@@ -54,9 +55,11 @@ export default function ProfilePage() {
                 style={{ backgroundColor: 'var(--blue)' }}
               >
                 {user?.profileImage ? (
-                  <img
+                  <Image
                     src={user.profileImage}
                     alt="프로필"
+                    width={80}
+                    height={80}
                     className="w-20 h-20 rounded-full object-cover"
                   />
                 ) : (

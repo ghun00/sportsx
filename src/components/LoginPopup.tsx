@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -93,9 +94,11 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
         }}>
           {/* 호랑이 캐릭터 */}
           <div className="text-center" style={{ marginBottom: '16px' }}>
-            <img
+            <Image
               src="/tiger.png"
               alt="Tiger Character"
+              width={220}
+              height={220}
               className={cn(
                 "mx-auto object-contain transition-all duration-500",
                 "w-full max-w-[180px] sm:max-w-[220px]",
@@ -162,9 +165,11 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
                 maxWidth: '100%'
               }}
             >
-              <img
+              <Image
                 src="/kakao.png"
                 alt="Kakao"
+                width={16}
+                height={16}
                 style={{ width: '16px', height: '16px' }}
               />
               <span>

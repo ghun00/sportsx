@@ -10,6 +10,14 @@ import {
   QueryConstraint
 } from 'firebase/firestore';
 import { db } from './firebase-config';
+
+// Firebase가 초기화되지 않은 경우를 위한 헬퍼 함수
+const getDb = () => {
+  if (!db) {
+    throw new Error('Firebase가 초기화되지 않았습니다. 환경변수를 확인해주세요.');
+  }
+  return db;
+};
 import { 
   PaginationParams,
   PaginatedResponse
@@ -60,7 +68,7 @@ export const createPaginatedQuery = (
     ...(lastDoc ? [startAfter(lastDoc)] : [])
   ];
   
-  return query(collection(db, collectionName), ...queryConstraints);
+  return query(collection(getDb(), collectionName), ...queryConstraints);
 };
 
 // 페이지네이션 응답 처리
@@ -106,24 +114,24 @@ export const handleFirestoreError = (error: unknown): string => {
 };
 
 // 유저 관련 유틸리티
-export const getUserRef = (userId: string) => doc(db, 'users', userId);
-export const getUsersCollection = () => collection(db, 'users');
+export const getUserRef = (userId: string) => doc(getDb(), 'users', userId);
+export const getUsersCollection = () => collection(getDb(), 'users');
 
 // 아티클 관련 유틸리티
-export const getArticleRef = (articleId: string) => doc(db, 'articles', articleId);
-export const getArticlesCollection = () => collection(db, 'articles');
+export const getArticleRef = (articleId: string) => doc(getDb(), 'articles', articleId);
+export const getArticlesCollection = () => collection(getDb(), 'articles');
 
 // 좋아요 관련 유틸리티
 export const getUserLikeRef = (userId: string, articleId: string) => 
-  doc(db, 'user_likes', `${userId}_${articleId}`);
-export const getUserLikesCollection = () => collection(db, 'user_likes');
+  doc(getDb(), 'user_likes', `${userId}_${articleId}`);
+export const getUserLikesCollection = () => collection(getDb(), 'user_likes');
 
 // 카테고리 관련 유틸리티
-export const getCategoryRef = (categoryId: string) => doc(db, 'categories', categoryId);
-export const getCategoriesCollection = () => collection(db, 'categories');
+export const getCategoryRef = (categoryId: string) => doc(getDb(), 'categories', categoryId);
+export const getCategoriesCollection = () => collection(getDb(), 'categories');
 
 // 관리자 로그 관련 유틸리티
-export const getAdminLogsCollection = () => collection(db, 'admin_logs');
+export const getAdminLogsCollection = () => collection(getDb(), 'admin_logs');
 
 // 서버 타임스탬프 생성
 export const getServerTimestamp = () => serverTimestamp();

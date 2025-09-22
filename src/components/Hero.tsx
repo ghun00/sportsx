@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLogin } from '@/contexts/LoginContext';
@@ -57,15 +58,14 @@ export default function Hero({ className }: HeroProps) {
           filter: 'blur(1px)' // 부드러운 효과
         }}
       >
-        <img
+        <Image
           src="/earth.png"
           alt="Earth background"
+          fill
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            display: 'block'
+            objectFit: 'contain'
           }}
+          priority
           onLoad={() => console.log('✅ Earth image loaded successfully')}
           onError={(e) => console.error('❌ Earth image failed to load:', e)}
         />

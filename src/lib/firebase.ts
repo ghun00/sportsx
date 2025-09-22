@@ -1,7 +1,7 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getFunctions } from 'firebase/functions';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { getAuth, Auth } from 'firebase/auth';
+import { getFirestore, Firestore } from 'firebase/firestore';
+import { getFunctions, Functions } from 'firebase/functions';
 
 // Firebase 설정 (환경변수에서 가져옴)
 const firebaseConfig = {
@@ -13,12 +13,23 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Firebase 초기화
-const app = initializeApp(firebaseConfig);
+// Firebase 초기화 (환경변수가 있을 때만)
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+let functions: Functions | null = null;
 
-// Firebase 서비스들
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const functions = getFunctions(app);
+// 환경변수가 모두 있는지 확인하고 빌드 환경이 아닐 때만 초기화
+const hasValidConfig = Object.values(firebaseConfig).every(value => value !== undefined && value !== '');
+const isBuildTime = process.env.NODE_ENV === 'production' && !process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
+if (hasValidConfig && typeof window !== 'undefined' && !isBuildTime) {
+  // 클라이언트 사이드에서만 초기화
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  functions = getFunctions(app);
+}
+
+export { auth, db, functions };
 export default app;
