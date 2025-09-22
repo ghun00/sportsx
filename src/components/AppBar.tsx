@@ -113,7 +113,7 @@ export default function AppBar({ className }: AppBarProps) {
                   href="https://sportsx.channel.io/home"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-medium transition-all duration-200 hover:scale-105 hidden sm:block"
+                  className="text-lg font-medium transition-all duration-200 hover:scale-105 hidden sm:block"
                   style={{ color: 'var(--muted)' }}
                 >
                   피드백 남기기

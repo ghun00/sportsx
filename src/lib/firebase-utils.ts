@@ -18,6 +18,11 @@ const getDb = () => {
   }
   return db;
 };
+
+// Firebase 초기화 상태 확인
+export const isFirebaseInitialized = () => {
+  return db !== null;
+};
 import { 
   PaginationParams,
   PaginatedResponse

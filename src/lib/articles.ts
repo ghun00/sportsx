@@ -60,7 +60,70 @@ export async function getFilteredArticles(categories: string[]): Promise<Article
 // 특정 아티클 조회
 export async function getArticleById(id: string): Promise<Article | null> {
   try {
-    return await ArticleService.getArticleById(id);
+    // Firebase에서 먼저 시도
+    const firebaseArticle = await ArticleService.getArticleById(id);
+    if (firebaseArticle) {
+      return firebaseArticle;
+    }
+    
+    // Firebase에서 찾지 못한 경우 JSON 파일에서 검색
+    console.log('🔄 Firebase에서 아티클을 찾지 못했습니다. JSON 파일에서 검색 중...');
+    
+    // JSON 파일에서 아티클 검색
+    const articles = await import('@/app/_data/articles.json');
+    const article = articles.default.find((a: unknown) => {
+      if (typeof a === 'object' && a !== null && 'id' in a) {
+        return (a as { id: string }).id === id;
+      }
+      return false;
+    });
+    
+    if (article) {
+      const articleData = article as {
+        id: string;
+        title_kr: string;
+        title_en?: string;
+        summary_kr?: string[];
+        summary_en?: string[];
+        content_kr?: string;
+        content_en?: string;
+        image?: string;
+        source?: string;
+        source_url?: string;
+        categories?: string[];
+        published_at?: string;
+      };
+      
+      console.log('✅ JSON 파일에서 아티클을 찾았습니다:', articleData.title_kr);
+      
+      // JSON 데이터를 Article 타입으로 변환
+      const convertedArticle: Article = {
+        id: articleData.id,
+        title_kr: articleData.title_kr,
+        title_en: articleData.title_en || '',
+        summary_kr: articleData.summary_kr || [],
+        summary_en: articleData.summary_en || [],
+        content_kr: articleData.content_kr || '',
+        content_en: articleData.content_en || '',
+        image: articleData.image || '',
+        source: articleData.source || '',
+        source_url: articleData.source_url || '',
+        categories: articleData.categories || [],
+        status: 'published',
+        viewCount: 0,
+        likeCount: 0,
+        tags: articleData.categories || [], // categories를 tags로 매핑
+        createdBy: 'system', // JSON 데이터는 시스템에서 생성
+        published_at: new Date(articleData.published_at || new Date()),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      return convertedArticle;
+    }
+    
+    console.log('❌ JSON 파일에서도 아티클을 찾을 수 없습니다:', id);
+    return null;
   } catch (error) {
     console.error('아티클 조회 실패:', error);
     return null;

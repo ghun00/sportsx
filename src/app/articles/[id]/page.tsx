@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,12 +16,15 @@ import { useLogin } from '@/contexts/LoginContext';
 import { useUserActivity } from '@/contexts/UserActivityContext';
 
 interface ArticlePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default function ArticlePage({ params }: ArticlePageProps) {
+  // Next.js 15에서 params가 Promise이므로 use()로 unwrap
+  const { id } = use(params);
+  
   const [article, setArticle] = useState<Article | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -35,45 +38,51 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     const loadArticle = async () => {
       try {
         setLoading(true);
+        console.log('🔄 아티클 로드 시작:', id);
         
         // 아티클 데이터 로드
-        const articleData = await getArticleById(params.id);
+        const articleData = await getArticleById(id);
+        console.log('📄 아티클 데이터:', articleData);
         
         if (!articleData) {
+          console.log('❌ 아티클을 찾을 수 없습니다');
           notFound();
+          setLoading(false);
           return;
         }
         
         setArticle(articleData);
+        setLoading(false);
         
         // 좋아요 상태 확인
-        const liked = await isArticleLiked(articleData.id);
-        setIsLiked(liked);
+        try {
+          const liked = await isArticleLiked(articleData.id);
+          setIsLiked(liked);
+        } catch (error) {
+          console.warn('좋아요 상태 확인 실패:', error);
+          setIsLiked(false);
+        }
         
-                // 조회수 증가
-                await incrementViewCount(articleData.id);
-                
-                // 사용자 활동 추적 (로그인하지 않은 사용자만)
-                if (!isLoggedIn) {
-                  incrementArticleView();
-                }
-                
-                // 페이지 로드 애니메이션
-                const timer = setTimeout(() => {
-                  setIsPageLoaded(true);
-                }, 100);
-                
-                return () => clearTimeout(timer);
+        // 조회수 증가
+        try {
+          await incrementViewCount(articleData.id);
+        } catch (error) {
+          console.warn('조회수 증가 실패:', error);
+        }
+        
+        // 페이지 로드 애니메이션
+        setTimeout(() => {
+          setIsPageLoaded(true);
+        }, 100);
       } catch (error) {
         console.error('아티클 로드 실패:', error);
-        notFound();
-      } finally {
         setLoading(false);
+        notFound();
       }
     };
 
     loadArticle();
-  }, [params.id, incrementArticleView, isLoggedIn]);
+  }, [id]);
 
   const handleLikeToggle = async () => {
     if (!article) return;

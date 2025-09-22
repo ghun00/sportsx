@@ -19,8 +19,11 @@ export interface User {
 export interface Article {
   id: string;
   title_kr: string;
+  title_en?: string;
   summary_kr: string[];
+  summary_en?: string[];
   content_kr: string;
+  content_en?: string;
   image: string;
   source: string;
   source_url: string;

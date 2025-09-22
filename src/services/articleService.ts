@@ -17,7 +17,8 @@ import {
   handleFirestoreError,
   createPaginatedQuery,
   processPaginatedResponse,
-  getServerTimestamp
+  getServerTimestamp,
+  isFirebaseInitialized
 } from '@/lib/firebase-utils';
 import { PaginationParams, PaginatedResponse } from '@/types';
 
@@ -54,10 +55,25 @@ export class ArticleService {
   // 아티클 ID로 조회
   static async getArticleById(articleId: string): Promise<Article | null> {
     try {
-      const articleRef = getArticleRef(articleId);
-      const articleDoc = await getDoc(articleRef);
+      console.log('🔍 아티클 조회 시작:', articleId);
+      console.log('🔍 Firebase 초기화 상태:', isFirebaseInitialized());
       
-      return convertFirestoreDoc<Article>(articleDoc);
+      // Firebase가 초기화되지 않은 경우 처리
+      if (!isFirebaseInitialized()) {
+        console.warn('Firebase가 초기화되지 않았습니다. 아티클 조회를 건너뜁니다.');
+        return null;
+      }
+      
+      const articleRef = getArticleRef(articleId);
+      console.log('🔍 아티클 참조 생성:', articleRef);
+      
+      const articleDoc = await getDoc(articleRef);
+      console.log('🔍 문서 스냅샷:', articleDoc);
+      
+      const result = convertFirestoreDoc<Article>(articleDoc);
+      console.log('🔍 변환된 아티클:', result);
+      
+      return result;
     } catch (error) {
       console.error('아티클 조회 오류:', error);
       return null;

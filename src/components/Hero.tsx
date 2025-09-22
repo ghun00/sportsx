@@ -61,7 +61,8 @@ export default function Hero({ className }: HeroProps) {
         <Image
           src="/earth.png"
           alt="Earth background"
-          fill
+          width={480}
+          height={480}
           style={{
             objectFit: 'contain'
           }}
