@@ -6,7 +6,8 @@ import {
   orderBy, 
   limit as limitQuery,
   updateDoc,
-  increment
+  increment,
+  addDoc
 } from 'firebase/firestore';
 import { Article } from '@/types';
 import { 

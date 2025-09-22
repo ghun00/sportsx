@@ -60,7 +60,7 @@ export class LikeService {
         }
       } else {
         // 새 좋아요 생성
-        const newLike: Omit<UserLike, 'id'> = {
+        const newLike = {
           userId,
           articleId,
           createdAt: getServerTimestamp(),

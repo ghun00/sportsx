@@ -172,8 +172,7 @@ export default function CreateArticlePage() {
                     style={{
                       backgroundColor: 'var(--bg)',
                       borderColor: 'var(--border)',
-                      color: 'var(--text)',
-                      focusRingColor: 'var(--blue)'
+                      color: 'var(--text)'
                     }}
                     placeholder="아티클 제목을 입력하세요"
                     required
@@ -194,7 +193,6 @@ export default function CreateArticlePage() {
                       backgroundColor: 'var(--bg)',
                       borderColor: 'var(--border)',
                       color: 'var(--text)',
-                      focusRingColor: 'var(--blue)'
                     }}
                     placeholder="https://example.com/image.jpg"
                   />
@@ -214,7 +212,6 @@ export default function CreateArticlePage() {
                       backgroundColor: 'var(--bg)',
                       borderColor: 'var(--border)',
                       color: 'var(--text)',
-                      focusRingColor: 'var(--blue)'
                     }}
                   />
                 </div>
@@ -248,7 +245,6 @@ export default function CreateArticlePage() {
                         backgroundColor: 'var(--bg)',
                         borderColor: 'var(--border)',
                         color: 'var(--text)',
-                        focusRingColor: 'var(--blue)'
                       }}
                       placeholder={`요약 ${index + 1}을 입력하세요`}
                     />
@@ -337,7 +333,6 @@ export default function CreateArticlePage() {
                       backgroundColor: 'var(--bg)',
                       borderColor: 'var(--border)',
                       color: 'var(--text)',
-                      focusRingColor: 'var(--blue)'
                     }}
                     placeholder="예: Front Office Sports"
                   />
@@ -356,7 +351,6 @@ export default function CreateArticlePage() {
                       backgroundColor: 'var(--bg)',
                       borderColor: 'var(--border)',
                       color: 'var(--text)',
-                      focusRingColor: 'var(--blue)'
                     }}
                     placeholder="https://example.com/original-article"
                   />

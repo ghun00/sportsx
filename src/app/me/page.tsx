@@ -8,22 +8,32 @@ import AppBar from '@/components/AppBar';
 import ArticleCard from '@/components/ArticleCard';
 import { getLikedArticles } from '@/lib/likes';
 import { getArticleById } from '@/lib/articles';
+import { Article } from '@/types';
 
 export default function MyPage() {
   const [, setLikedArticleIds] = useState<string[]>([]);
   const [likedArticles, setLikedArticles] = useState<Article[]>([]);
 
   useEffect(() => {
-    // localStorage에서 좋아요한 아티클 ID 가져오기
-    const likedIds = getLikedArticles();
-    setLikedArticleIds(likedIds);
+    const loadLikedArticles = async () => {
+      try {
+        // localStorage에서 좋아요한 아티클 ID 가져오기
+        const likedIds = await getLikedArticles();
+        setLikedArticleIds(likedIds);
 
-    // ID로 실제 아티클 데이터 가져오기 (archived 상태 제외)
-    const articles = likedIds
-      .map(id => getArticleById(id))
-      .filter(Boolean)
-      .filter(article => article && article.status !== 'archived');
-    setLikedArticles(articles);
+        // ID로 실제 아티클 데이터 가져오기 (archived 상태 제외)
+        const articlePromises = likedIds.map(id => getArticleById(id));
+        const articles = await Promise.all(articlePromises);
+        const validArticles = articles
+          .filter(Boolean)
+          .filter(article => article && article.status !== 'archived') as Article[];
+        setLikedArticles(validArticles);
+      } catch (error) {
+        console.error('좋아요한 아티클 로드 실패:', error);
+      }
+    };
+
+    loadLikedArticles();
   }, []);
 
 

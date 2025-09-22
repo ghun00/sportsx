@@ -183,7 +183,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <div className={`flex items-center space-x-4 text-sm mb-6 transition-all duration-500 delay-600 ${isPageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`} style={{ color: 'var(--muted)' }}>
             <span>{article.source}</span>
             <span>•</span>
-            <time dateTime={article.published_at}>
+            <time dateTime={article.published_at instanceof Date ? article.published_at.toISOString() : new Date(article.published_at).toISOString()}>
               {new Date(article.published_at).toLocaleDateString('ko-KR', {
                 year: 'numeric',
                 month: 'long',

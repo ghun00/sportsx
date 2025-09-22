@@ -167,7 +167,7 @@ export default function SimpleEditor({ value, onChange }: SimpleEditorProps) {
             '--tw-prose-bold': 'var(--text)',
             '--tw-prose-counters': 'var(--muted)',
             '--tw-prose-bullets': 'var(--muted)',
-          }}
+          } as React.CSSProperties}
         />
       </div>
     </div>

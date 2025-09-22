@@ -37,10 +37,10 @@ export class UserService {
         });
       } else {
         // 새 유저 생성
-        const newUser: Omit<User, 'id'> = {
+        const newUser = {
           email: userData.email || '',
           nickname: userData.nickname || '익명',
-          profileImage: userData.profileImage || null,
+          profileImage: userData.profileImage || undefined,
           provider: userData.provider || 'kakao',
           role: 'user', // 기본값은 일반 유저
           createdAt: now,

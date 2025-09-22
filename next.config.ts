@@ -15,11 +15,9 @@ const nextConfig: NextConfig = {
   },
   // Firebase Functions 폴더를 Next.js 빌드에서 제외
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
-  experimental: {
-    // Firebase Functions 폴더 무시
-    outputFileTracingExcludes: {
-      '*': ['./functions/**/*'],
-    },
+  // Next.js 15.5.3에서는 outputFileTracingExcludes가 최상위 레벨로 이동
+  outputFileTracingExcludes: {
+    '*': ['./functions/**/*'],
   },
 };
 

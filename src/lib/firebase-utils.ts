@@ -23,7 +23,11 @@ export const convertTimestamp = (timestamp: unknown): Date => {
   if (timestamp instanceof Date) {
     return timestamp;
   }
-  return new Date(timestamp);
+  if (typeof timestamp === 'string' || typeof timestamp === 'number') {
+    return new Date(timestamp);
+  }
+  // 기본값으로 현재 시간 반환
+  return new Date();
 };
 
 // Firestore 데이터를 타입으로 변환
@@ -94,7 +98,7 @@ export const handleFirestoreError = (error: unknown): string => {
       case 'unavailable':
         return '서비스가 일시적으로 사용할 수 없습니다.';
       default:
-        return `데이터베이스 오류: ${(error as { message: string }).message}`;
+        return `데이터베이스 오류: ${error instanceof Error ? error.message : '알 수 없는 오류'}`;
     }
   }
   

@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import LikeButton from '@/components/LikeButton';
-import { Article, formatPublishedDate } from '@/lib/articles';
+import { formatPublishedDate } from '@/lib/articles';
+import { Article } from '@/types';
 import { cn } from '@/lib/utils';
 
 interface ArticleCardProps {
@@ -68,7 +69,7 @@ export default function ArticleCard({ article, className }: ArticleCardProps) {
           <div className="flex items-center space-x-3 text-xs" style={{ color: 'var(--muted)' }}>
             <span>{article.source}</span>
             <span>•</span>
-            <span>{formatPublishedDate(article.published_at)}</span>
+            <span>{formatPublishedDate(article.published_at instanceof Date ? article.published_at.toISOString() : article.published_at)}</span>
           </div>
         </div>
       </Link>
