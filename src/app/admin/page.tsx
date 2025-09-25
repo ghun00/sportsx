@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AppBar from '@/components/AppBar';
 import { useAdmin } from '@/contexts/AdminContext';
+import { trackAdminPageView } from '@/lib/analytics';
 
 export default function AdminAuthPage() {
   const router = useRouter();
@@ -17,6 +18,11 @@ export default function AdminAuthPage() {
       router.push('/admin/articles');
     }
   }, [isAdminAuthenticated, router]);
+
+  // GA4 관리자 페이지 방문 추적
+  useEffect(() => {
+    trackAdminPageView('admin_login');
+  }, []);
 
   const handleInputChange = (index: number, value: string) => {
     // 숫자만 허용

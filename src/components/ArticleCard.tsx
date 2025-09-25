@@ -4,6 +4,7 @@ import LikeButton from '@/components/LikeButton';
 import { formatPublishedDate } from '@/lib/articles';
 import { Article } from '@/types';
 import { cn } from '@/lib/utils';
+import { trackArticleClick } from '@/lib/analytics';
 
 interface ArticleCardProps {
   article: Article;
@@ -16,7 +17,11 @@ export default function ArticleCard({ article, className }: ArticleCardProps) {
       'group relative overflow-hidden transition-all duration-300 hover:scale-[1.02]',
       className
     )}>
-      <Link href={`/articles/${article.id}`} className="block">
+      <Link 
+        href={`/articles/${article.id}`} 
+        className="block"
+        onClick={() => trackArticleClick(article.id, article.title_kr, article.categories[0])}
+      >
         {/* 이미지 */}
         <div className="relative aspect-video overflow-hidden rounded-lg mb-4">
           <Image
@@ -61,7 +66,7 @@ export default function ArticleCard({ article, className }: ArticleCardProps) {
           </h3>
           
           {/* 요약 */}
-          <p className="text-md leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
+          <p className="text-md leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>git 
             {article.summary_kr.join(' • ')}
           </p>
           

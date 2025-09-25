@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { Article } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLogin } from '@/contexts/LoginContext';
-import { useUserActivity } from '@/contexts/UserActivityContext';
+import { trackArticleView } from '@/lib/analytics';
 
 interface ArticlePageProps {
   params: Promise<{
@@ -52,6 +52,9 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         
         setArticle(articleData);
         setLoading(false);
+        
+        // GA4 아티클 뷰 이벤트 추적
+        trackArticleView(articleData.id, articleData.title_kr, articleData.categories[0]);
         
         // 좋아요 상태 확인
         try {

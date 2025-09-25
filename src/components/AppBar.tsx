@@ -7,6 +7,7 @@ import { Heart, User, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLogin } from '@/contexts/LoginContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { trackFeedbackClick, trackProfileVisit, trackLikedArticlesVisit } from '@/lib/analytics';
 
 interface AppBarProps {
   className?: string;
@@ -57,6 +58,7 @@ export default function AppBar({ className }: AppBarProps) {
                   href="/liked"
                   className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
                   title="좋아요한 게시물"
+                  onClick={() => trackLikedArticlesVisit()}
                 >
                   <Heart 
                     className="w-6 h-6 sm:w-8 sm:h-8" 
@@ -73,6 +75,7 @@ export default function AppBar({ className }: AppBarProps) {
                     href="/profile"
                     className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
                     title="프로필"
+                    onClick={() => trackProfileVisit()}
                   >
                     <User 
                       className="w-6 h-6 sm:w-8 sm:h-8" 
@@ -115,6 +118,7 @@ export default function AppBar({ className }: AppBarProps) {
                   rel="noopener noreferrer"
                   className="text-lg font-medium transition-all duration-200 hover:scale-105 hidden sm:block"
                   style={{ color: 'var(--muted)' }}
+                  onClick={() => trackFeedbackClick()}
                 >
                   피드백 남기기
                 </a>
@@ -125,6 +129,7 @@ export default function AppBar({ className }: AppBarProps) {
                   rel="noopener noreferrer"
                   className="text-xs font-medium transition-all duration-200 hover:scale-105 block sm:hidden"
                   style={{ color: 'var(--muted)' }}
+                  onClick={() => trackFeedbackClick()}
                 >
                   피드백
                 </a>

@@ -43,18 +43,14 @@ export default function Hero({ className }: HeroProps) {
         </div>
       </div>
       
-      {/* 지구 이미지 - 정 중앙 */}
+      {/* 지구 이미지 - 정 중앙 (반응형) */}
       <div 
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1] opacity-15 blur-[1px]"
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '480px',
-          height: '480px',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 1, // 타이틀과 CTA 버튼보다 뒤로
-          opacity: 0.15, // 투명도 조절
-          filter: 'blur(1px)', // 부드러운 효과
+          width: 'min(480px, 80vw)',
+          height: 'min(480px, 80vw)',
+          maxWidth: '480px',
+          maxHeight: '480px',
           backgroundImage: `url('https://github.com/ghun00/sportsx/blob/main/public/earth.png?raw=true')`,
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',

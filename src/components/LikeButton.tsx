@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 import { isArticleLiked, toggleArticleLike } from '@/lib/likes';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLogin } from '@/contexts/LoginContext';
+import { trackArticleLike } from '@/lib/analytics';
+import { getArticleById } from '@/lib/articles';
 
 interface LikeButtonProps {
   id: string;
@@ -51,6 +53,18 @@ export default function LikeButton({ id, size = 'md', className, onLikeChange }:
       
       const newLikedState = await toggleArticleLike(id);
       setIsLiked(newLikedState);
+      
+      // GA4 좋아요 이벤트 추적
+      try {
+        const article = await getArticleById(id);
+        if (article) {
+          trackArticleLike(id, article.title_kr, newLikedState);
+        }
+      } catch (error) {
+        console.warn('아티클 정보를 가져올 수 없어 GA4 추적을 건너뜁니다:', error);
+        // 아티클 정보가 없어도 좋아요 이벤트는 추적
+        trackArticleLike(id, `Article ${id}`, newLikedState);
+      }
       
       // 부모 컴포넌트에 상태 변경 알림
       if (onLikeChange) {

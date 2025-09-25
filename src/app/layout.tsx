@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export const metadata: Metadata = {
   title: "스포츠엑스 - 해외 스포츠 산업의 흐름을 한국어로 읽다",
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="dark">
       <body className="font-pretendard antialiased min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
+        <GoogleAnalytics />
         <ClientLayout>
           {children}
         </ClientLayout>

@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '@/types';
 import { UserService } from '@/services/userService';
+import { trackLogin, trackLoginFailed, trackLogout } from '@/lib/analytics';
 
 interface AuthContextType {
   user: User | null;
@@ -39,6 +40,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error: unknown) {
       console.error('❌ 로그인 실패:', error);
       const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
+      
+      // GA4 로그인 실패 이벤트 추적
+      trackLoginFailed('kakao', errorMessage);
+      
       alert(`로그인에 실패했습니다: ${errorMessage}`);
       setIsLoading(false);
     }
@@ -62,6 +67,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // 로컬 스토리지에 저장
       localStorage.setItem('sx_user', JSON.stringify(firebaseUser));
+      
+      // GA4 로그인 성공 이벤트 추적
+      trackLogin('kakao', firebaseUser.id);
       
       console.log('✅ Firebase 유저 정보 저장 완료:', firebaseUser);
     } catch (error) {
@@ -87,6 +95,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(fallbackUser);
       localStorage.setItem('sx_user', JSON.stringify(fallbackUser));
       
+      // GA4 로그인 성공 이벤트 추적 (fallback)
+      trackLogin('kakao', fallbackUser.id);
+      
       console.log('⚠️ Fallback 유저 정보로 로그인:', fallbackUser);
     } finally {
       setIsLoading(false);
@@ -96,6 +107,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     setIsLoading(true);
     try {
+      // GA4 로그아웃 이벤트 추적
+      trackLogout();
+      
       // 로컬 상태 초기화
       setUser(null);
       
