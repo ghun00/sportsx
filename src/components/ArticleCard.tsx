@@ -61,7 +61,7 @@ export default function ArticleCard({ article, className }: ArticleCardProps) {
           </h3>
           
           {/* 요약 */}
-          <p className="text-sm leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
+          <p className="text-md leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
             {article.summary_kr.join(' • ')}
           </p>
           

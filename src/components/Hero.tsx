@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useLogin } from '@/contexts/LoginContext';
@@ -56,7 +55,7 @@ export default function Hero({ className }: HeroProps) {
           zIndex: 1, // 타이틀과 CTA 버튼보다 뒤로
           opacity: 0.15, // 투명도 조절
           filter: 'blur(1px)', // 부드러운 효과
-          backgroundImage: `url('/earth.png'), url('https://sportsx.vercel.app/earth.png')`,
+          backgroundImage: `url('https://github.com/ghun00/sportsx/blob/main/public/earth.png?raw=true')`,
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center'

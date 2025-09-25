@@ -95,7 +95,7 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
           {/* 호랑이 캐릭터 */}
           <div className="text-center" style={{ marginBottom: '16px' }}>
             <Image
-              src="/tiger.png"
+              src="https://github.com/ghun00/sportsx/blob/main/public/tiger.png?raw=true"
               alt="Tiger Character"
               width={220}
               height={220}
@@ -166,7 +166,7 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
               }}
             >
               <Image
-                src="/kakao.png"
+                src="https://github.com/ghun00/sportsx/blob/main/public/kakao.png?raw=true"
                 alt="Kakao"
                 width={16}
                 height={16}

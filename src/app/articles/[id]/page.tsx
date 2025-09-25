@@ -32,7 +32,6 @@ export default function ArticlePage({ params }: ArticlePageProps) {
   const [loading, setLoading] = useState(true);
   const { isLoggedIn } = useAuth();
   const { openLoginPopup } = useLogin();
-  const { incrementArticleView } = useUserActivity();
 
   useEffect(() => {
     const loadArticle = async () => {

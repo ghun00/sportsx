@@ -38,7 +38,7 @@ export default function AppBar({ className }: AppBarProps) {
           {/* 로고 */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/logo.png"
+              src="https://github.com/ghun00/sportsx/blob/main/public/logo.png?raw=true"
               alt="스포츠엑스"
               width={160}
               height={48}
