@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -28,6 +29,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="dark">
+      <head>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CLB2V5EHD5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CLB2V5EHD5');
+          `}
+        </Script>
+      </head>
       <body className="font-pretendard antialiased min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text)' }}>
         <GoogleAnalytics />
         <ClientLayout>

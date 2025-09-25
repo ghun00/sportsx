@@ -46,34 +46,23 @@ export class Analytics {
       return;
     }
 
-    // gtag 스크립트 로드
-    this.loadGtagScript();
-    
-    // 기본 설정
-    if (window.gtag) {
-      window.gtag('js', new Date());
-      window.gtag('config', this.measurementId, {
-        send_page_view: false, // 수동으로 페이지 뷰 관리
-      });
+    // gtag가 이미 로드되었는지 확인 (layout.tsx에서 로드됨)
+    if (!window.gtag) {
+      console.warn('GA4 gtag가 아직 로드되지 않았습니다. 잠시 후 다시 시도합니다.');
+      setTimeout(() => this.initialize(), 100);
+      return;
     }
+
+    // 기본 설정
+    window.gtag('js', new Date());
+    window.gtag('config', this.measurementId, {
+      send_page_view: false, // 수동으로 페이지 뷰 관리
+    });
 
     this.isInitialized = true;
     console.log('✅ GA4 Analytics 초기화 완료');
   }
 
-  // gtag 스크립트 동적 로드
-  private loadGtagScript(): void {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${this.measurementId}`;
-    document.head.appendChild(script);
-
-    // dataLayer 초기화
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
-  }
 
   // 이벤트 추적
   public trackEvent(event: GA4Event): void {
