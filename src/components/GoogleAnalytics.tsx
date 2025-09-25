@@ -8,8 +8,12 @@ export default function GoogleAnalytics() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // GA4 초기화
-    analytics.initialize();
+    // GA4 초기화 - 지연 로딩으로 우선순위 낮춤
+    const timer = setTimeout(() => {
+      analytics.initialize();
+    }, 1000); // 1초 지연
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

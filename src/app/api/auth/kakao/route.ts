@@ -7,9 +7,26 @@ const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 // 카카오 인증 URL 생성
 export async function GET() {
   try {
+    console.log('🔍 카카오 API GET 요청 시작');
+    console.log('🔍 NODE_ENV:', process.env.NODE_ENV);
+    console.log('🔍 VERCEL:', process.env.VERCEL ? 'Vercel 환경' : '로컬 환경');
+    console.log('🔍 VERCEL_ENV:', process.env.VERCEL_ENV);
+    console.log('🔍 KAKAO_CLIENT_ID:', KAKAO_CLIENT_ID ? `설정됨 (${KAKAO_CLIENT_ID.substring(0, 10)}...)` : '없음');
+    console.log('🔍 REDIRECT_URI:', REDIRECT_URI ? `설정됨 (${REDIRECT_URI})` : '없음');
+    console.log('🔍 모든 환경 변수 키:', Object.keys(process.env).filter(key => key.includes('KAKAO')));
+    
     if (!KAKAO_CLIENT_ID || !REDIRECT_URI) {
+      console.error('❌ 카카오 환경 변수 누락');
+      console.error('❌ KAKAO_CLIENT_ID:', KAKAO_CLIENT_ID);
+      console.error('❌ REDIRECT_URI:', REDIRECT_URI);
+      
+      // 개발 환경에서는 더 자세한 정보 제공
+      const errorMessage = process.env.NODE_ENV === 'development' 
+        ? `카카오 설정이 올바르지 않습니다. 환경 변수를 확인해주세요.\n\n설정해야 할 환경 변수:\n- NEXT_PUBLIC_KAKAO_CLIENT_ID\n- KAKAO_CLIENT_SECRET\n- NEXT_PUBLIC_KAKAO_REDIRECT_URI\n\n현재 설정 상태:\n- KAKAO_CLIENT_ID: ${KAKAO_CLIENT_ID ? '설정됨' : '없음'}\n- REDIRECT_URI: ${REDIRECT_URI ? '설정됨' : '없음'}`
+        : '카카오 설정이 올바르지 않습니다. 환경 변수를 확인해주세요.';
+      
       return NextResponse.json(
-        { error: '카카오 설정이 올바르지 않습니다.' },
+        { error: errorMessage },
         { status: 500 }
       );
     }

@@ -32,7 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.error || '인증 URL 생성에 실패했습니다.');
+        console.error('❌ 카카오 API 응답 오류:', response.status, data);
+        throw new Error(data.error || `인증 URL 생성에 실패했습니다. (${response.status})`);
       }
       
       // 카카오 인증 페이지로 리다이렉트
