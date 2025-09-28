@@ -12,10 +12,10 @@ export default function AdminAuthPage() {
   const [password, setPassword] = useState(['', '', '', '', '', '']);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // 이미 인증된 경우 아티클 목록으로 리다이렉트
+  // 이미 인증된 경우 대시보드로 리다이렉트
   useEffect(() => {
     if (isAdminAuthenticated) {
-      router.push('/admin/articles');
+      router.push('/admin/dashboard');
     }
   }, [isAdminAuthenticated, router]);
 

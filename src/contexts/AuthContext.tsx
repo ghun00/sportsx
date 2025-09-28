@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '@/types';
 import { UserService } from '@/services/userService';
-import { trackLogin, trackLoginFailed, trackLogout } from '@/lib/analytics';
+import { trackLogin, trackSignUp, trackLoginFailed, trackLogout } from '@/lib/analytics';
 
 interface AuthContextType {
   user: User | null;
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       
       // Firebase에 유저 정보 저장/업데이트
-      const firebaseUser = await UserService.createOrUpdateUser({
+      const { user: firebaseUser, isNewUser } = await UserService.createOrUpdateUser({
         id: kakaoUserData.id.toString(),
         email: kakaoUserData.email || '',
         nickname: kakaoUserData.nickname,
@@ -69,8 +69,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // 로컬 스토리지에 저장
       localStorage.setItem('sx_user', JSON.stringify(firebaseUser));
       
-      // GA4 로그인 성공 이벤트 추적
-      trackLogin('kakao', firebaseUser.id);
+      // GA4 이벤트 추적 - 회원가입과 로그인 구분
+      if (isNewUser) {
+        trackSignUp('kakao', firebaseUser.id);
+        console.log('🎉 새 회원가입 완료:', firebaseUser.nickname);
+      } else {
+        trackLogin('kakao', firebaseUser.id);
+        console.log('🔑 로그인 완료:', firebaseUser.nickname);
+      }
       
       console.log('✅ Firebase 유저 정보 저장 완료:', firebaseUser);
     } catch (error) {
@@ -96,8 +102,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(fallbackUser);
       localStorage.setItem('sx_user', JSON.stringify(fallbackUser));
       
-      // GA4 로그인 성공 이벤트 추적 (fallback)
-      trackLogin('kakao', fallbackUser.id);
+      // GA4 회원가입 이벤트 추적 (fallback - 새 사용자로 간주)
+      trackSignUp('kakao', fallbackUser.id);
       
       console.log('⚠️ Fallback 유저 정보로 로그인:', fallbackUser);
     } finally {

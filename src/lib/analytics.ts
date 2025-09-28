@@ -21,6 +21,7 @@ export interface GA4Event {
     error_message?: string;
     load_time?: number;
     login_method?: string;
+    signup_method?: string;
     admin_action?: string;
   };
 }
@@ -129,6 +130,23 @@ export class Analytics {
       event_label: method,
       custom_parameters: {
         login_method: method,
+        user_id: userId,
+      },
+    });
+
+    if (userId) {
+      this.setUserId(userId);
+    }
+  }
+
+  // 회원가입 이벤트
+  public trackSignUp(method: string, userId?: string): void {
+    this.trackEvent({
+      event_name: 'sign_up',
+      event_category: 'authentication',
+      event_label: method,
+      custom_parameters: {
+        signup_method: method,
         user_id: userId,
       },
     });
@@ -294,6 +312,8 @@ export const trackPageView = (page_title: string, page_path: string) =>
   analytics.trackPageView(page_title, page_path);
 export const trackLogin = (method: string, userId?: string) => 
   analytics.trackLogin(method, userId);
+export const trackSignUp = (method: string, userId?: string) => 
+  analytics.trackSignUp(method, userId);
 export const trackLoginFailed = (method: string, errorMessage?: string) => 
   analytics.trackLoginFailed(method, errorMessage);
 export const trackLogout = () => analytics.trackLogout();
