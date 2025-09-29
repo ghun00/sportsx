@@ -116,13 +116,13 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
               <p 
                 className={cn(
                   "font-bold transition-all duration-500",
-                  "text-xl sm:text-3xl",
-                  "whitespace-nowrap",
+                  "text-lg sm:text-xl md:text-3xl",
+                  "text-center leading-tight break-words",
                   isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 )}
                 style={{ 
                   color: 'var(--text)',
-                  lineHeight: '1.3',
+                  lineHeight: '1.2',
                   marginBottom: '8px',
                   transitionDelay: '300ms'
                 }}
@@ -132,13 +132,13 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
               <p 
                 className={cn(
                   "transition-all duration-500",
-                  "text-base sm:text-xl",
-                  "whitespace-nowrap",
+                  "text-sm sm:text-base md:text-xl",
+                  "text-center leading-relaxed break-words",
                   isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 )}
                 style={{ 
                   color: 'var(--muted)',
-                  lineHeight: '1.3',
+                  lineHeight: '1.4',
                   transitionDelay: '400ms'
                 }}
               >

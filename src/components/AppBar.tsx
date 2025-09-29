@@ -127,11 +127,11 @@ export default function AppBar({ className }: AppBarProps) {
                   href="https://sportsx.channel.io/home"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-medium transition-all duration-200 hover:scale-105 block sm:hidden"
+                  className="text-lg font-medium transition-all duration-200 hover:scale-105 block sm:hidden"
                   style={{ color: 'var(--muted)' }}
                   onClick={() => trackFeedbackClick()}
                 >
-                  피드백
+                  피드백 남기기
                 </a>
 
                 <button
