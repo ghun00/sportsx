@@ -11,7 +11,7 @@ export default function ProfilePage() {
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="container mx-auto px-6 lg:px-8 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>
               로그인이 필요합니다
@@ -28,7 +28,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
       <AppBar />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="container mx-auto px-6 lg:px-8 py-8">
         {/* 페이지 헤더 */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>
