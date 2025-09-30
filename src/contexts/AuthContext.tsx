@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { User } from '@/types';
 import { UserService } from '@/services/userService';
 import { trackLogin, trackSignUp, trackLoginFailed, trackLogout } from '@/lib/analytics';
+import { isFirebaseInitialized } from '@/lib/firebase-utils';
 
 interface AuthContextType {
   user: User | null;
@@ -53,6 +54,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const setUserFromCallback = async (kakaoUserData: { id: number; nickname: string; email?: string; profileImage?: string; accessToken: string }) => {
     try {
       setIsLoading(true);
+      
+      // Firebase 초기화 상태 확인
+      if (!isFirebaseInitialized()) {
+        console.error('❌ Firebase가 초기화되지 않았습니다. 환경변수를 확인해주세요.');
+        throw new Error('Firebase가 초기화되지 않았습니다. 환경변수를 확인해주세요.');
+      }
+      
+      console.log('🔍 Firebase 사용자 저장 시작:', { kakaoId: kakaoUserData.id, nickname: kakaoUserData.nickname });
       
       // Firebase에 유저 정보 저장/업데이트
       const { user: firebaseUser, isNewUser } = await UserService.createOrUpdateUser({

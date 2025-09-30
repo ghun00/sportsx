@@ -18,16 +18,25 @@ import {
   getUsersCollection,
   convertFirestoreDoc,
   handleFirestoreError,
-  getServerTimestamp
+  getServerTimestamp,
+  isFirebaseInitialized
 } from '@/lib/firebase-utils';
 
 export class UserService {
   // 새 유저 생성 또는 업데이트
   static async createOrUpdateUser(userData: Partial<User>): Promise<{ user: User; isNewUser: boolean }> {
     try {
+      // Firebase 초기화 상태 확인
+      if (!isFirebaseInitialized()) {
+        console.error('❌ Firebase가 초기화되지 않았습니다. 환경변수를 확인해주세요.');
+        throw new Error('Firebase가 초기화되지 않았습니다. 환경변수를 확인해주세요.');
+      }
+
       if (!userData.id) {
         throw new Error('유저 ID가 필요합니다.');
       }
+
+      console.log('🔍 Firebase 사용자 생성/업데이트 시작:', { userId: userData.id, nickname: userData.nickname });
 
       const userRef = getUserRef(userData.id);
       const userDoc = await getDoc(userRef);
@@ -37,18 +46,30 @@ export class UserService {
       
       if (userDoc.exists()) {
         // 기존 유저 업데이트
-        await updateDoc(userRef, {
-          ...userData,
+        console.log('🔍 기존 사용자 업데이트:', userData.id);
+        
+        // undefined 값들을 제거한 업데이트 데이터 생성
+        const updateData: Record<string, unknown> = {
           lastLoginAt: now,
           updatedAt: now
+        };
+        
+        // userData에서 undefined가 아닌 값들만 추가
+        Object.entries(userData).forEach(([key, value]) => {
+          if (value !== undefined) {
+            updateData[key] = value;
+          }
         });
+        
+        await updateDoc(userRef, updateData);
       } else {
         // 새 유저 생성
         isNewUser = true;
+        console.log('🔍 새 사용자 생성:', userData.id);
         const newUser = {
           email: userData.email || '',
           nickname: userData.nickname || '익명',
-          profileImage: userData.profileImage || undefined,
+          ...(userData.profileImage && { profileImage: userData.profileImage }),
           provider: userData.provider || 'kakao',
           role: 'user', // 기본값은 일반 유저
           createdAt: now,
@@ -61,6 +82,7 @@ export class UserService {
         };
         
         await setDoc(userRef, newUser);
+        console.log('✅ 새 사용자 Firebase에 저장 완료');
       }
       
       // 업데이트된 유저 데이터 반환
@@ -71,6 +93,7 @@ export class UserService {
         throw new Error('유저 데이터를 가져올 수 없습니다.');
       }
       
+      console.log('✅ Firebase 사용자 처리 완료:', { userId: user.id, isNewUser, nickname: user.nickname });
       return { user, isNewUser };
     } catch (error) {
       throw new Error(handleFirestoreError(error));
