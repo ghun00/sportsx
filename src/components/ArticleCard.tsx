@@ -9,9 +9,10 @@ import { trackArticleClick } from '@/lib/analytics';
 interface ArticleCardProps {
   article: Article;
   className?: string;
+  showSummary?: boolean;
 }
 
-export default function ArticleCard({ article, className }: ArticleCardProps) {
+export default function ArticleCard({ article, className, showSummary = true }: ArticleCardProps) {
   return (
     <article className={cn(
       'group relative overflow-hidden transition-all duration-300 hover:scale-[1.02]',
@@ -66,9 +67,11 @@ export default function ArticleCard({ article, className }: ArticleCardProps) {
           </h3>
           
           {/* 요약 */}
-          <p className="text-md leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
-            {article.summary_kr.join(' • ')}
-          </p>
+          {showSummary && (
+            <p className="text-md leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
+              {article.summary_kr.join(' • ')}
+            </p>
+          )}
           
           {/* 하단 정보 */}
           <div className="flex items-center space-x-3 text-xs" style={{ color: 'var(--muted)' }}>
