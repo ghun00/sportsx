@@ -301,6 +301,50 @@ export class Analytics {
       },
     });
   }
+
+  // 온보딩 관련 이벤트들
+  public trackOnboardingShown(reason: string): void {
+    this.trackEvent({
+      event_name: 'onboarding_shown',
+      event_category: 'onboarding',
+      event_label: reason,
+      custom_parameters: {
+        reason,
+      },
+    });
+  }
+
+  public trackOnboardingSelect(question: string, value: string): void {
+    this.trackEvent({
+      event_name: 'onboarding_select',
+      event_category: 'onboarding',
+      event_label: question,
+      custom_parameters: {
+        question,
+        value,
+      },
+    });
+  }
+
+  public trackOnboardingSave(status: 'success' | 'fail', error?: unknown): void {
+    this.trackEvent({
+      event_name: 'onboarding_save',
+      event_category: 'onboarding',
+      event_label: status,
+      custom_parameters: {
+        status,
+        error_message: error instanceof Error ? error.message : String(error),
+      },
+    });
+  }
+
+  public trackOnboardingSkip(): void {
+    this.trackEvent({
+      event_name: 'onboarding_skip',
+      event_category: 'onboarding',
+      event_label: 'skip',
+    });
+  }
 }
 
 // 싱글톤 인스턴스 내보내기
@@ -336,3 +380,13 @@ export const trackFirebaseError = (errorMessage: string) =>
   analytics.trackFirebaseError(errorMessage);
 export const trackPageLoadTime = (loadTime: number) => 
   analytics.trackPageLoadTime(loadTime);
+
+// 온보딩 관련 편의 함수들
+export const trackOnboardingShown = (reason: string) => 
+  analytics.trackOnboardingShown(reason);
+export const trackOnboardingSelect = (question: string, value: string) => 
+  analytics.trackOnboardingSelect(question, value);
+export const trackOnboardingSave = (status: 'success' | 'fail', error?: unknown) => 
+  analytics.trackOnboardingSave(status, error);
+export const trackOnboardingSkip = () => 
+  analytics.trackOnboardingSkip();

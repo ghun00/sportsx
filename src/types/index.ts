@@ -14,6 +14,10 @@ export interface User {
     notifications: boolean;
     emailMarketing: boolean;
   };
+  // 온보딩 정보
+  career_stage?: '대학생' | '취업 준비중' | '스포츠 관련 종사자' | '기타';
+  interests?: string[];
+  usage_purpose?: '커리어 준비에 도움' | '산업 트렌드 학습' | '재미·호기심';
 }
 
 export interface Article {

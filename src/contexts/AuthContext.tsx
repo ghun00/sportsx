@@ -13,6 +13,9 @@ interface AuthContextType {
   login: () => Promise<void>;
   logout: () => Promise<void>;
   setUserFromCallback: (user: { id: number; nickname: string; email?: string; profileImage?: string; accessToken: string }) => Promise<void>;
+  showOnboarding: boolean;
+  setShowOnboarding: (show: boolean) => void;
+  checkOnboardingNeeded: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const isLoggedIn = !!user;
 
@@ -88,6 +92,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       
       console.log('✅ Firebase 유저 정보 저장 완료:', firebaseUser);
+      
+      // 온보딩 필요 여부 확인 (firebaseUser를 직접 전달)
+      await checkOnboardingNeededForUser(firebaseUser);
     } catch (error) {
       console.error('❌ Firebase 유저 정보 저장 실패:', error);
       
@@ -117,6 +124,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('⚠️ Fallback 유저 정보로 로그인:', fallbackUser);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const checkOnboardingNeeded = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const needsOnboarding = await UserService.needsOnboarding(user.id);
+      setShowOnboarding(needsOnboarding);
+      
+      if (needsOnboarding) {
+        console.log('🔍 온보딩이 필요합니다.');
+      }
+    } catch (error) {
+      console.error('온보딩 필요 여부 확인 실패:', error);
+    }
+  };
+
+  const checkOnboardingNeededForUser = async (targetUser: User) => {
+    try {
+      const needsOnboarding = await UserService.needsOnboarding(targetUser.id);
+      setShowOnboarding(needsOnboarding);
+      
+      if (needsOnboarding) {
+        console.log('🔍 온보딩이 필요합니다.');
+      }
+    } catch (error) {
+      console.error('온보딩 필요 여부 확인 실패:', error);
     }
   };
 
@@ -162,7 +197,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       login,
       logout,
-      setUserFromCallback
+      setUserFromCallback,
+      showOnboarding,
+      setShowOnboarding,
+      checkOnboardingNeeded
     }}>
       {children}
     </AuthContext.Provider>

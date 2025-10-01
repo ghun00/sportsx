@@ -19,7 +19,8 @@ import {
   convertFirestoreDoc,
   handleFirestoreError,
   getServerTimestamp,
-  isFirebaseInitialized
+  isFirebaseInitialized,
+  getCurrentUserId
 } from '@/lib/firebase-utils';
 
 export class UserService {
@@ -291,6 +292,69 @@ export class UserService {
       return users;
     } catch (error) {
       throw new Error(handleFirestoreError(error));
+    }
+  }
+
+  // 온보딩 정보 업데이트
+  static async updateUserOnboarding(onboardingData: {
+    career_stage?: '대학생' | '취업 준비중' | '스포츠 관련 종사자' | '기타';
+    interests?: string[];
+    usage_purpose?: '커리어 준비에 도움' | '산업 트렌드 학습' | '재미·호기심';
+  }): Promise<void> {
+    try {
+      // Firebase 초기화 상태 확인
+      if (!isFirebaseInitialized()) {
+        throw new Error('Firebase가 초기화되지 않았습니다.');
+      }
+
+      const currentUserId = getCurrentUserId();
+      if (!currentUserId) {
+        throw new Error('로그인이 필요합니다.');
+      }
+
+      console.log('🔍 온보딩 정보 업데이트 시작:', { userId: currentUserId, onboardingData });
+
+      const userRef = getUserRef(currentUserId);
+      
+      // undefined 값들을 제거한 업데이트 데이터 생성
+      const updateData: Record<string, unknown> = {
+        updatedAt: getServerTimestamp()
+      };
+      
+      // 온보딩 데이터에서 undefined가 아닌 값들만 추가
+      Object.entries(onboardingData).forEach(([key, value]) => {
+        if (value !== undefined) {
+          updateData[key] = value;
+        }
+      });
+      
+      await updateDoc(userRef, updateData);
+      console.log('✅ 온보딩 정보 업데이트 완료');
+    } catch (error) {
+      throw new Error(handleFirestoreError(error));
+    }
+  }
+
+  // 온보딩 정보 필요 여부 확인
+  static async needsOnboarding(userId: string): Promise<boolean> {
+    try {
+      const userRef = getUserRef(userId);
+      const userDoc = await getDoc(userRef);
+      
+      if (!userDoc.exists()) {
+        return true; // 사용자가 없으면 온보딩 필요
+      }
+      
+      const user = convertFirestoreDoc<User>(userDoc);
+      if (!user) {
+        return true;
+      }
+      
+      // 3개 필드 중 하나라도 비어있으면 온보딩 필요
+      return !user.career_stage || !user.interests || user.interests.length === 0 || !user.usage_purpose;
+    } catch (error) {
+      console.error('온보딩 필요 여부 확인 오류:', error);
+      return false; // 에러 시 온보딩 표시하지 않음
     }
   }
 }

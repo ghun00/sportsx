@@ -5,6 +5,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { AdminProvider } from "@/contexts/AdminContext";
 import { UserActivityProvider } from "@/contexts/UserActivityContext";
 import LoginPopup from "@/components/LoginPopup";
+import OnboardingProvider from "@/components/OnboardingProvider";
 
 function ClientLayoutInner({ children }: { children: React.ReactNode }) {
   const { isLoginPopupOpen, closeLoginPopup } = useLogin();
@@ -13,6 +14,7 @@ function ClientLayoutInner({ children }: { children: React.ReactNode }) {
     <>
       {children}
       <LoginPopup isOpen={isLoginPopupOpen} onClose={closeLoginPopup} />
+      <OnboardingProvider />
     </>
   );
 }
