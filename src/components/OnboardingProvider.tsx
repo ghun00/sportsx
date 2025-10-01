@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import OnboardingModal from './OnboardingModal';
 
 export default function OnboardingProvider() {
-  const { showOnboarding, setShowOnboarding, checkOnboardingNeeded } = useAuth();
+  const { showOnboarding, setShowOnboarding } = useAuth();
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);

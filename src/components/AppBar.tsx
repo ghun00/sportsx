@@ -30,13 +30,34 @@ export default function AppBar({ className }: AppBarProps) {
   };
 
   return (
-    <header className={cn(
-      'sticky top-0 z-40 w-full backdrop-blur-xl',
-      className
-    )} style={{ backgroundColor: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
-      <div className="container mx-auto px-6 lg:px-8">
-        <div className="flex h-16 sm:h-20 items-center justify-between">
-          {/* 로고 */}
+    <>
+      {/* 피드백 배너 */}
+      <a
+        href="https://sportsx.channel.io/home"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="sticky top-0 z-50 w-full bg-black block hover:bg-gray-900 transition-colors duration-200"
+        onClick={() => trackFeedbackClick()}
+      >
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="flex h-12 items-center justify-between">
+            <span className="text-sm sm:text-lg font-medium text-white">
+              피드백 남기기
+            </span>
+            <span className="text-gray-300 text-lg">
+              →
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <header className={cn(
+        'sticky top-12 z-40 w-full backdrop-blur-xl',
+        className
+      )} style={{ backgroundColor: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="flex h-16 sm:h-20 items-center justify-between">
+            {/* 로고 */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
               src="https://github.com/ghun00/sportsx/blob/main/public/logo.png?raw=true"
@@ -69,29 +90,21 @@ export default function AppBar({ className }: AppBarProps) {
                   />
                 </Link>
 
-                {/* 프로필 (말풍선 포함) */}
-                <div className="relative">
-                  <Link
-                    href="/profile"
-                    className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
-                    title="프로필"
-                    onClick={() => trackProfileVisit()}
-                  >
-                    <User 
-                      className="w-6 h-6 sm:w-8 sm:h-8" 
-                      style={{ 
-                        color: getIconColor('/profile'),
-                        fill: pathname === '/profile' ? '#ffffff' : 'none'
-                      }} 
-                    />
-                  </Link>
-                  
-                  {/* 말풍선 */}
-                  <div className="absolute -top-2 -right-2 w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                  <div className="absolute -top-1 -right-8 bg-blue-500 text-white text-xs px-2 py-1 rounded-full whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity duration-200">
-                    피드백은 여기서!
-                  </div>
-                </div>
+                {/* 프로필 */}
+                <Link
+                  href="/profile"
+                  className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
+                  title="프로필"
+                  onClick={() => trackProfileVisit()}
+                >
+                  <User 
+                    className="w-6 h-6 sm:w-8 sm:h-8" 
+                    style={{ 
+                      color: getIconColor('/profile'),
+                      fill: pathname === '/profile' ? '#ffffff' : 'none'
+                    }} 
+                  />
+                </Link>
 
                 {/* 로그아웃 */}
                 <button
@@ -110,42 +123,18 @@ export default function AppBar({ className }: AppBarProps) {
               </>
             ) : (
               // 로그인 전 메뉴
-              <>
-                {/* 피드백 링크 (로그인 전에만 표시) */}
-                <a
-                  href="https://sportsx.channel.io/home"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg font-medium transition-all duration-200 hover:scale-105 hidden sm:block"
-                  style={{ color: 'var(--muted)' }}
-                  onClick={() => trackFeedbackClick()}
-                >
-                  피드백 남기기
-                </a>
-                
-                <a
-                  href="https://sportsx.channel.io/home"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg font-medium transition-all duration-200 hover:scale-105 block sm:hidden"
-                  style={{ color: 'var(--muted)' }}
-                  onClick={() => trackFeedbackClick()}
-                >
-                  피드백 남기기
-                </a>
-
-                <button
-                  onClick={openLoginPopup}
-                  className="px-4 py-2 text-lg font-medium transition-all duration-200 hover:scale-105"
-                  style={{ color: 'var(--text)' }}
-                >
-                  로그인
-                </button>
-              </>
+              <button
+                onClick={openLoginPopup}
+                className="px-4 py-2 text-lg font-medium transition-all duration-200 hover:scale-105"
+                style={{ color: 'var(--text)' }}
+              >
+                로그인
+              </button>
             )}
           </nav>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }

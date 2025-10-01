@@ -23,6 +23,10 @@ export interface GA4Event {
     login_method?: string;
     signup_method?: string;
     admin_action?: string;
+    reason?: string;
+    question?: string;
+    value?: string;
+    status?: string;
   };
 }
 

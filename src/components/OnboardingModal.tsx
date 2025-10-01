@@ -115,9 +115,9 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
     setIsSubmitting(true);
     try {
       await UserService.updateUserOnboarding({
-        career_stage: careerStage as any,
+        career_stage: careerStage as '대학생' | '취업 준비중' | '스포츠 관련 종사자' | '기타',
         interests: interests,
-        usage_purpose: usagePurpose as any
+        usage_purpose: usagePurpose as '커리어 준비에 도움' | '산업 트렌드 학습' | '재미·호기심'
       });
 
       trackOnboardingSave('success');

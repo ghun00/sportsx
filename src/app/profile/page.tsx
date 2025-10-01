@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { User } from 'lucide-react';
 import AppBar from '@/components/AppBar';
@@ -141,24 +140,6 @@ export default function ProfilePage() {
 
         </div>
 
-        {/* 플로팅 피드백 버튼 */}
-        <div className="fixed bottom-12 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-6 lg:px-8">
-          <a
-            href="https://sportsx.channel.io/home"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium transition-all duration-300 hover:scale-105 rounded-2xl shadow-xl"
-            style={{ 
-              color: 'white',
-              backgroundColor: 'var(--blue)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-            }}
-          >
-            💬 피드백 보내기
-          </a>
-        </div>
       </div>
     </div>
   );
