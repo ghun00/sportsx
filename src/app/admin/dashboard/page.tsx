@@ -1,14 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Users, FileText } from 'lucide-react';
+import { Users, FileText, MessageSquare } from 'lucide-react';
 import AppBar from '@/components/AppBar';
 import AdminGuard from '@/components/AdminGuard';
 import AdminArticlesTab from '@/components/admin/AdminArticlesTab';
 import AdminUsersTab from '@/components/admin/AdminUsersTab';
+import AdminKakaoUsersTab from '@/components/admin/AdminKakaoUsersTab';
 
 export default function AdminDashboardPage() {
-  const [activeTab, setActiveTab] = useState<'articles' | 'users'>('articles');
+  const [activeTab, setActiveTab] = useState<'articles' | 'users' | 'kakao-users'>('articles');
 
   const tabs = [
     {
@@ -22,6 +23,12 @@ export default function AdminDashboardPage() {
       label: '사용자 관리',
       icon: Users,
       component: AdminUsersTab
+    },
+    {
+      id: 'kakao-users' as const,
+      label: '카카오 유저 정보',
+      icon: MessageSquare,
+      component: AdminKakaoUsersTab
     }
   ];
 
