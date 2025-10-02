@@ -89,19 +89,36 @@ export class ArticleService {
     try {
       const { limit: pageLimit = 20 } = paginationParams || {};
       
-      const constraints = [
-        // 상태 필터링
-        ...(status !== 'all' ? [where('status', '==', status)] : []),
-        // 카테고리 필터링
-        ...(category && category !== '전체' ? [where('categories', 'array-contains', category)] : []),
-        // 정렬 (최신순)
-        orderBy('published_at', 'desc')
-      ];
+      // 인덱스 없이 작동하도록 단순화된 쿼리
+      const articlesRef = getArticlesCollection();
+      const q = query(
+        articlesRef,
+        orderBy('createdAt', 'desc'),
+        limitQuery(pageLimit)
+      );
       
-      const q = createPaginatedQuery('articles', constraints, paginationParams);
       const querySnapshot = await getDocs(q);
+      const allArticles = querySnapshot.docs.map(doc => convertFirestoreDoc<Article>(doc)).filter(Boolean) as Article[];
       
-      return processPaginatedResponse<Article>(querySnapshot.docs, pageLimit);
+      // 클라이언트 사이드에서 필터링
+      let filteredArticles = allArticles;
+      
+      // 상태 필터링
+      if (status !== 'all') {
+        filteredArticles = filteredArticles.filter(article => article.status === status);
+      }
+      
+      // 카테고리 필터링
+      if (category && category !== '전체') {
+        filteredArticles = filteredArticles.filter(article => 
+          article.categories && article.categories.includes(category)
+        );
+      }
+      
+      return {
+        data: filteredArticles,
+        hasMore: false // 단순화를 위해 페이지네이션 비활성화
+      };
     } catch (error) {
       console.error('아티클 목록 조회 오류:', error);
       return {
@@ -111,21 +128,87 @@ export class ArticleService {
     }
   }
 
-  // 인기 아티클 조회 (최신 발행일 기준)
+  // 인기 아티클 조회 (조회수 + 좋아요 수 복합 점수 기준)
   static async getPopularArticles(limitCount: number = 3): Promise<Article[]> {
+    try {
+      // 인덱스 없이 작동하도록 단순화된 쿼리
+      const articlesRef = getArticlesCollection();
+      const q = query(
+        articlesRef,
+        orderBy('createdAt', 'desc'),
+        limitQuery(50) // 충분한 데이터를 가져와서 인기도 기준으로 정렬
+      );
+      
+      const querySnapshot = await getDocs(q);
+      const allArticles = querySnapshot.docs.map(doc => convertFirestoreDoc<Article>(doc)).filter(Boolean) as Article[];
+      
+      // 클라이언트 사이드에서 published 상태만 필터링
+      const publishedArticles = allArticles.filter(article => article.status === 'published');
+      
+      // 인기도 점수 계산 (조회수 * 1 + 좋아요 수 * 3)
+      const articlesWithScore = publishedArticles.map(article => ({
+        ...article,
+        popularityScore: (article.viewCount || 0) * 1 + (article.likeCount || 0) * 3
+      }));
+      
+      // 인기도 점수 기준으로 정렬 (점수가 같으면 조회수 기준, 그것도 같으면 생성일 기준)
+      const sortedByPopularity = articlesWithScore.sort((a, b) => {
+        const scoreDiff = b.popularityScore - a.popularityScore;
+        if (scoreDiff !== 0) return scoreDiff;
+        
+        const viewDiff = (b.viewCount || 0) - (a.viewCount || 0);
+        if (viewDiff !== 0) return viewDiff;
+        
+        // 조회수도 같으면 생성일 기준으로 정렬
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+      
+      console.log('🔥 인기 아티클 (인기도 점수 기준):', sortedByPopularity.slice(0, limitCount).map(a => ({
+        title: a.title_kr,
+        viewCount: a.viewCount,
+        likeCount: a.likeCount,
+        popularityScore: a.popularityScore
+      })));
+      
+      // popularityScore 제거하고 원본 Article 객체 반환
+      return sortedByPopularity.slice(0, limitCount).map(({ popularityScore, ...article }) => article);
+    } catch (error) {
+      console.error('인기 아티클 조회 오류:', error);
+      return [];
+    }
+  }
+
+  // 조회수 기준 인기 아티클 (순수 조회수만)
+  static async getMostViewedArticles(limitCount: number = 3): Promise<Article[]> {
     try {
       const articlesRef = getArticlesCollection();
       const q = query(
         articlesRef,
-        where('status', '==', 'published'),
-        orderBy('published_at', 'desc'),
-        limitQuery(limitCount)
+        orderBy('createdAt', 'desc'),
+        limitQuery(50)
       );
       
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map(doc => convertFirestoreDoc<Article>(doc)).filter(Boolean) as Article[];
+      const allArticles = querySnapshot.docs.map(doc => convertFirestoreDoc<Article>(doc)).filter(Boolean) as Article[];
+      
+      const publishedArticles = allArticles.filter(article => article.status === 'published');
+      
+      // 조회수 기준으로 정렬
+      const sortedByViewCount = publishedArticles.sort((a, b) => {
+        const viewDiff = (b.viewCount || 0) - (a.viewCount || 0);
+        if (viewDiff !== 0) return viewDiff;
+        
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+      
+      console.log('👀 조회수 기준 인기 아티클:', sortedByViewCount.slice(0, limitCount).map(a => ({
+        title: a.title_kr,
+        viewCount: a.viewCount
+      })));
+      
+      return sortedByViewCount.slice(0, limitCount);
     } catch (error) {
-      console.error('인기 아티클 조회 오류:', error);
+      console.error('조회수 기준 인기 아티클 조회 오류:', error);
       return [];
     }
   }
@@ -138,16 +221,28 @@ export class ArticleService {
     try {
       const { limit: pageLimit = 20 } = paginationParams || {};
       
-      const constraints = [
-        where('status', '==', 'published'),
-        where('categories', 'array-contains', category),
-        orderBy('published_at', 'desc')
-      ];
+      // 인덱스 없이 작동하도록 단순화된 쿼리
+      const articlesRef = getArticlesCollection();
+      const q = query(
+        articlesRef,
+        orderBy('createdAt', 'desc'),
+        limitQuery(pageLimit * 2) // 여유분을 두고 가져와서 클라이언트에서 필터링
+      );
       
-      const q = createPaginatedQuery('articles', constraints, paginationParams);
       const querySnapshot = await getDocs(q);
+      const allArticles = querySnapshot.docs.map(doc => convertFirestoreDoc<Article>(doc)).filter(Boolean) as Article[];
       
-      return processPaginatedResponse<Article>(querySnapshot.docs, pageLimit);
+      // 클라이언트 사이드에서 필터링
+      const filteredArticles = allArticles.filter(article => 
+        article.status === 'published' && 
+        article.categories && 
+        article.categories.includes(category)
+      );
+      
+      return {
+        data: filteredArticles.slice(0, pageLimit),
+        hasMore: false // 단순화를 위해 페이지네이션 비활성화
+      };
     } catch (error) {
       console.error('카테고리별 아티클 조회 오류:', error);
       return {
@@ -243,23 +338,26 @@ export class ArticleService {
     try {
       const { limit: pageLimit = 20 } = paginationParams || {};
       
-      // Firestore는 전체 텍스트 검색을 지원하지 않으므로
-      // 제목과 태그에서 검색하도록 구현
-      const constraints = [
-        where('status', '==', 'published'),
-        orderBy('published_at', 'desc')
-      ];
+      // 인덱스 없이 작동하도록 단순화된 쿼리
+      const articlesRef = getArticlesCollection();
+      const q = query(
+        articlesRef,
+        orderBy('createdAt', 'desc'),
+        limitQuery(pageLimit * 3) // 여유분을 두고 가져와서 클라이언트에서 검색
+      );
       
-      const q = createPaginatedQuery('articles', constraints, paginationParams);
       const querySnapshot = await getDocs(q);
       
       // 클라이언트 사이드에서 필터링
       const allArticles = querySnapshot.docs.map(doc => convertFirestoreDoc<Article>(doc)).filter(Boolean) as Article[];
       
+      // published 상태와 검색어 필터링
       const filteredArticles = allArticles.filter(article => 
-        article.title_kr.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        article.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        article.categories.some(category => category.toLowerCase().includes(searchTerm.toLowerCase()))
+        article.status === 'published' && (
+          article.title_kr.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          article.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          article.categories.some(category => category.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
       );
       
       return {

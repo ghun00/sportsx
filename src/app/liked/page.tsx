@@ -31,8 +31,14 @@ export default function LikedArticlesPage() {
             const articles = (await Promise.all(articlePromises))
               .filter(Boolean)
               .filter(article => article && article.status !== 'archived') as Article[];
-            console.log('🔍 조회된 아티클들 (archived 제외):', articles);
-            setLikedArticles(articles);
+            
+            // 생성일 기준으로 최신순 정렬
+            const sortedArticles = articles.sort((a, b) => 
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+            
+            console.log('🔍 조회된 아티클들 (archived 제외, 생성일 정렬):', sortedArticles);
+            setLikedArticles(sortedArticles);
           } else {
             console.log('🔍 좋아요한 아티클이 없음');
             setLikedArticles([]);

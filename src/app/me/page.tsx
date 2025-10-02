@@ -27,7 +27,13 @@ export default function MyPage() {
         const validArticles = articles
           .filter(Boolean)
           .filter(article => article && article.status !== 'archived') as Article[];
-        setLikedArticles(validArticles);
+        
+        // 생성일 기준으로 최신순 정렬
+        const sortedArticles = validArticles.sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        
+        setLikedArticles(sortedArticles);
       } catch (error) {
         console.error('좋아요한 아티클 로드 실패:', error);
       }

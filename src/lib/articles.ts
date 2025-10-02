@@ -14,12 +14,22 @@ export async function getAllArticles(): Promise<Article[]> {
   }
 }
 
-// 인기 아티클 조회 (상위 limit개)
+// 인기 아티클 조회 (상위 limit개) - 조회수 + 좋아요 수 복합 점수 기준
 export async function getPopularArticles(limit: number = 3): Promise<Article[]> {
   try {
     return await ArticleService.getPopularArticles(limit);
   } catch (error) {
     console.error('인기 아티클 조회 실패:', error);
+    return [];
+  }
+}
+
+// 조회수 기준 인기 아티클 조회
+export async function getMostViewedArticles(limit: number = 3): Promise<Article[]> {
+  try {
+    return await ArticleService.getMostViewedArticles(limit);
+  } catch (error) {
+    console.error('조회수 기준 인기 아티클 조회 실패:', error);
     return [];
   }
 }
