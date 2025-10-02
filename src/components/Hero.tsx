@@ -20,7 +20,7 @@ export default function Hero({ className }: HeroProps) {
         <div className="text-center max-w-5xl mx-auto">
           {/* 메인 타이틀 */}
           <h1 className="text-2xl sm:text-3xl lg:text-4xl mb-6 font-bold leading-relaxed relative z-10" style={{ color: 'var(--text)' }}>
-            스포츠 커리어 성장을 위한<br className="sm:hidden" /> 한국어로 읽다
+            스포츠 커리어 성장을 위한<br className="sm:hidden" /> 지식 허브
           </h1>
           
           <p className="text-xl sm:text-2xl mb-12 font-light relative z-10" style={{ color: 'var(--text)' }}>
