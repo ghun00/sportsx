@@ -115,6 +115,51 @@ html {
   margin-bottom: 1rem; /* 기본 간격의 2배 */
 }
 
+/* 아티클 본문 h2 태그 커스텀 스타일 */
+.article-content h2 {
+  font-size: 28px !important; /* 모바일 기준 28px */
+  font-weight: bold !important;
+  margin-top: 1rem !important; /* 상단 마진 16px */
+  margin-bottom: 1rem !important; /* 하단 마진 16px */
+  line-height: 1.3 !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* 아티클 본문 h3 태그 커스텀 스타일 */
+.article-content h3 {
+  font-size: 24px !important; /* 모바일 기준 24px */
+  font-weight: bold !important;
+  margin-top: 1rem !important; /* 상단 마진 16px */
+  margin-bottom: 1rem !important; /* 하단 마진 16px */
+  line-height: 1.3 !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* 아티클 본문 h4 태그 커스텀 스타일 */
+.article-content h4 {
+  font-size: 24px !important; /* 모바일 기준 24px */
+  font-weight: bold !important;
+  margin-top: 1rem !important; /* 상단 마진 16px */
+  margin-bottom: 1rem !important; /* 하단 마진 16px */
+  line-height: 1.3 !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* PC 기준 h2, h3, h4 태그 크기 */
+@media (min-width: 640px) {
+  .article-content h2 {
+    font-size: 32px !important; /* PC 기준 32px */
+  }
+  
+  .article-content h3 {
+    font-size: 28px !important; /* PC 기준 28px */
+  }
+  
+  .article-content h4 {
+    font-size: 24px !important; /* PC 기준 24px (모바일과 동일) */
+  }
+}
+
 /* AI 3줄 요약 p 태그 간격 */
 .summary-content p {
   margin-bottom: 1rem;

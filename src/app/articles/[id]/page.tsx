@@ -242,8 +242,9 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                 prose-strong:text-sx-text prose-strong:font-semibold
                 prose-ul:text-sx-text prose-ol:text-sx-text
                 prose-li:text-sx-text prose-li:leading-[1.5]
-                prose-h2:text-3xl prose-h2:font-bold prose-h2:mt-10 prose-h2:mb-6 prose-h2:tracking-tight
-                prose-h3:text-2xl prose-h3:font-semibold prose-h3:mt-8 prose-h3:mb-4 prose-h3:tracking-tight"
+                prose-h2:font-bold prose-h2:tracking-tight
+                prose-h3:font-bold prose-h3:tracking-tight
+                prose-h4:font-bold prose-h4:tracking-tight"
               style={{ 
                 fontSize: '16px', 
                 lineHeight: '1.5'
