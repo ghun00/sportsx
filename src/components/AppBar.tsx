@@ -3,11 +3,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { Heart, User, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLogin } from '@/contexts/LoginContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { trackFeedbackClick, trackProfileVisit, trackLikedArticlesVisit } from '@/lib/analytics';
+import Toast from './Toast';
 
 interface AppBarProps {
   className?: string;
@@ -17,11 +19,16 @@ export default function AppBar({ className }: AppBarProps) {
   const { openLoginPopup } = useLogin();
   const { isLoggedIn, logout } = useAuth();
   const pathname = usePathname();
+  const [showToast, setShowToast] = useState(false);
 
   const handleLogout = async () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
       await logout();
     }
+  };
+
+  const handleCareerAssistantClick = () => {
+    setShowToast(true);
   };
 
   // 현재 경로에 따른 아이콘 색상 결정
@@ -56,21 +63,46 @@ export default function AppBar({ className }: AppBarProps) {
         className
       )} style={{ backgroundColor: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
         <div className="container mx-auto px-6 lg:px-8">
-          <div className="flex h-16 sm:h-20 items-center justify-between">
+          <div className="flex h-16 sm:h-20 items-center relative">
             {/* 로고 */}
-          <Link href="/" className="flex items-center space-x-3">
-            <Image
-              src="https://github.com/ghun00/sportsx/blob/main/public/logo.png?raw=true"
-              alt="스포츠엑스"
-              width={160}
-              height={48}
-              className="h-6 sm:h-7 w-auto max-w-[120px] sm:max-w-none"
-              priority
-            />
+          <Link href="/" className="flex items-center space-x-12">
+          <Image
+    src="/symbol.png"
+    alt="스포츠엑스"
+    width={60}   // 최대 크기 기준
+    height={60}
+    className="w-12 h-12 lg:w-15 lg:h-15"  // w-12,h-12=48px / w-15,h-15=60px
+    priority
+  />
+            
           </Link>
 
-          {/* 우측 메뉴 */}
-          <nav className="flex items-center space-x-4">
+          {/* 네비게이션 메뉴 - 가로 스크롤 가능 */}
+          <div className="flex-1 overflow-x-auto scrollbar-hide relative">
+            <nav className="flex items-center space-x-4 sm:space-x-6 lg:space-x-8 ml-4 min-w-max">
+              <Link
+                href="/"
+                className="text-lg sm:text-xl font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap"
+                style={{ 
+                  color: pathname === '/' ? '#ffffff' : '#9AA4AF'
+                }}
+              >
+                피드
+              </Link>
+              <button
+                onClick={handleCareerAssistantClick}
+                className="text-lg sm:text-xl font-medium transition-all duration-200 hover:scale-105 cursor-pointer whitespace-nowrap"
+                style={{ color: '#9AA4AF' }}
+              >
+                커리어 비서
+              </button>
+            </nav>
+            {/* 그라데이션 오버레이 - 우측 메뉴 뒤에 있다는 것을 표현 */}
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--bg)] to-transparent pointer-events-none z-0"></div>
+          </div>
+
+          {/* 우측 메뉴 - z-index로 앞에 위치 */}
+          <nav className="flex items-center space-x-2 sm:space-x-4 ml-auto relative z-10 bg-[var(--bg)] pl-4 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
             {isLoggedIn ? (
               // 로그인 후 메뉴
               <>
@@ -135,6 +167,15 @@ export default function AppBar({ className }: AppBarProps) {
           </div>
         </div>
       </header>
+      
+      {/* 토스트 알럿 */}
+      <Toast
+        message="개발중인 기능이에요! 조금만 기다려주세요😊"
+        type="success"
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
+        duration={3000}
+      />
     </>
   );
 }
