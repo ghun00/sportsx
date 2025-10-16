@@ -102,7 +102,7 @@ export default function AppBar({ className }: AppBarProps) {
           </div>
 
           {/* 우측 메뉴 - z-index로 앞에 위치 */}
-          <nav className="flex items-center space-x-2 sm:space-x-4 ml-auto relative z-10 bg-[var(--bg)] pl-4 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+          <nav className="flex items-center space-x-2 sm:space-x-4 ml-auto relative z-10 bg-[var(--bg)] pl-4">
             {isLoggedIn ? (
               // 로그인 후 메뉴
               <>
