@@ -117,7 +117,7 @@ export default function Home() {
           {/* 전체 아티클 그리드 */}
           <section>
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                   <div key={i} className="animate-pulse">
                     <div className="bg-gray-700 rounded-2xl h-48 mb-4"></div>
@@ -128,7 +128,7 @@ export default function Home() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
                   {displayedArticles.map((article) => (
                     <ArticleCard key={article.id} article={article} />
                   ))}

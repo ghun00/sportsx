@@ -151,7 +151,7 @@ export default function SimpleEditor({ value, onChange }: SimpleEditorProps) {
 
       {/* 에디터 영역 */}
       <div 
-        className="min-h-[300px] p-4"
+        className="min-h-[300px] max-h-[60vh] p-4 overflow-y-auto"
         style={{
           backgroundColor: 'var(--bg)',
           color: 'var(--text)'
