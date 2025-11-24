@@ -738,6 +738,10 @@ export default function JobsPage() {
                   </div>
                 )}
               </div>
+              <div className="w-full rounded-2xl border border-dashed border-[var(--border)] bg-[var(--panel)]/90 px-4 py-3 text-sm font-semibold text-[var(--text)]">
+                <span className="mr-2">⚠️</span>
+                현재 개발중인 화면으로 테스트용 데이터입니다. 더 좋은 서비스를 위해 개발하고 있으니 조금만 기다려주세요!
+              </div>
               <div className="w-full rounded-2xl bg-[var(--panel)] px-4 py-3 text-sm font-medium text-[var(--text)]">
                 <span className="mr-2 text-base">🗓</span>
                 월·목 오전 10시에 신규 공고가 업데이트돼요.
