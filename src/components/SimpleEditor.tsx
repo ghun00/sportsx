@@ -144,7 +144,7 @@ export default function SimpleEditor({ value, onChange }: SimpleEditorProps) {
 
         <div className="flex-1" />
 
-        <span className="text-xs" style={{ color: 'var(--muted)' }}>
+        <span className="text-xs" style={{ color: 'var(--text)' }}>
           Enter: 줄바꿈 | Shift+Enter: 새 단락
         </span>
       </div>
@@ -165,8 +165,8 @@ export default function SimpleEditor({ value, onChange }: SimpleEditorProps) {
             '--tw-prose-headings': 'var(--text)',
             '--tw-prose-links': 'var(--blue)',
             '--tw-prose-bold': 'var(--text)',
-            '--tw-prose-counters': 'var(--muted)',
-            '--tw-prose-bullets': 'var(--muted)',
+            '--tw-prose-counters': 'var(--text)',
+            '--tw-prose-bullets': 'var(--text)',
           } as React.CSSProperties}
         />
       </div>

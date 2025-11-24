@@ -3,13 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
 import { Heart, User, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLogin } from '@/contexts/LoginContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { trackFeedbackClick, trackProfileVisit, trackLikedArticlesVisit } from '@/lib/analytics';
-import Toast from './Toast';
+import { trackFeedbackClick, trackProfileVisit, trackLikedArticlesVisit, trackNavClick } from '@/lib/analytics';
 
 interface AppBarProps {
   className?: string;
@@ -19,7 +17,6 @@ export default function AppBar({ className }: AppBarProps) {
   const { openLoginPopup } = useLogin();
   const { isLoggedIn, logout } = useAuth();
   const pathname = usePathname();
-  const [showToast, setShowToast] = useState(false);
 
   const handleLogout = async () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
@@ -27,13 +24,22 @@ export default function AppBar({ className }: AppBarProps) {
     }
   };
 
-  const handleCareerAssistantClick = () => {
-    setShowToast(true);
-  };
+  const navItems = [
+    { label: '피드', href: '/', track: 'feed' as const },
+    { label: '추천 공고', href: '/jobs', track: 'jobs' as const },
+    { label: '커리어 비서', href: '/assistant', track: 'assistant' as const },
+  ];
 
   // 현재 경로에 따른 아이콘 색상 결정
   const getIconColor = (path: string) => {
-    return pathname === path ? '#ffffff' : '#9AA4AF'; // 화이트 또는 gray
+    return pathname === path ? 'var(--text)' : '#9AA4AF';
+  };
+
+  const isActivePath = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
   };
 
   return (
@@ -80,36 +86,39 @@ export default function AppBar({ className }: AppBarProps) {
           {/* 네비게이션 메뉴 - 가로 스크롤 가능 */}
           <div className="flex-1 overflow-x-auto scrollbar-hide relative">
             <nav className="flex items-center space-x-4 sm:space-x-6 lg:space-x-8 ml-4 min-w-max">
-              <Link
-                href="/"
-                className="text-lg sm:text-xl font-medium transition-all duration-200 hover:scale-105 whitespace-nowrap"
-                style={{ 
-                  color: pathname === '/' ? '#ffffff' : '#9AA4AF'
-                }}
-              >
-                피드
-              </Link>
-              <button
-                onClick={handleCareerAssistantClick}
-                className="text-lg sm:text-xl font-medium transition-all duration-200 hover:scale-105 cursor-pointer whitespace-nowrap"
-                style={{ color: '#9AA4AF' }}
-              >
-                커리어 비서
-              </button>
+              {navItems.map((item) => {
+                const isActive = isActivePath(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={isActive ? 'page' : undefined}
+                    onClick={() => trackNavClick(item.track)}
+                    className={cn(
+                      'relative text-lg sm:text-xl transition-all duration-200 whitespace-nowrap pb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--blue)] focus-visible:ring-offset-[var(--bg)]',
+                      isActive
+                        ? 'font-bold text-[var(--text)]'
+                        : 'font-medium text-[#9AA4AF] hover:text-[var(--text)]'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
             {/* 그라데이션 오버레이 - 우측 메뉴 뒤에 있다는 것을 표현 */}
             <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--bg)] to-transparent pointer-events-none z-0"></div>
           </div>
 
           {/* 우측 메뉴 - z-index로 앞에 위치 */}
-          <nav className="flex items-center space-x-2 sm:space-x-4 ml-auto relative z-10 bg-[var(--bg)] pl-4">
+          <nav className="flex items-center space-x-1 sm:space-x-2 ml-auto relative z-10 bg-[var(--bg)] pl-4">
             {isLoggedIn ? (
               // 로그인 후 메뉴
               <>
                 {/* 하트 아이콘 - 좋아요한 게시물 */}
                 <Link
                   href="/liked"
-                  className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
+                  className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
                   title="좋아요한 게시물"
                   onClick={() => trackLikedArticlesVisit()}
                 >
@@ -117,7 +126,7 @@ export default function AppBar({ className }: AppBarProps) {
                     className="w-6 h-6 sm:w-8 sm:h-8" 
                     style={{ 
                       color: getIconColor('/liked'),
-                      fill: pathname === '/liked' ? '#ffffff' : 'none'
+                      fill: pathname === '/liked' ? 'var(--text)' : 'none'
                     }} 
                   />
                 </Link>
@@ -125,7 +134,7 @@ export default function AppBar({ className }: AppBarProps) {
                 {/* 프로필 */}
                 <Link
                   href="/profile"
-                  className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
+                  className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
                   title="프로필"
                   onClick={() => trackProfileVisit()}
                 >
@@ -133,32 +142,16 @@ export default function AppBar({ className }: AppBarProps) {
                     className="w-6 h-6 sm:w-8 sm:h-8" 
                     style={{ 
                       color: getIconColor('/profile'),
-                      fill: pathname === '/profile' ? '#ffffff' : 'none'
+                      fill: pathname === '/profile' ? 'var(--text)' : 'none'
                     }} 
                   />
                 </Link>
-
-                {/* 로그아웃 */}
-                <button
-                  onClick={handleLogout}
-                  className="p-2 rounded-full transition-all duration-200 hover:scale-110 hover:bg-[var(--panel)]"
-                  title="로그아웃"
-                >
-                  <LogOut 
-                    className="w-6 h-6 sm:w-8 sm:h-8" 
-                    style={{ 
-                      color: '#9AA4AF',
-                      fill: 'none'
-                    }} 
-                  />
-                </button>
               </>
             ) : (
               // 로그인 전 메뉴
               <button
                 onClick={openLoginPopup}
-                className="px-4 py-2 text-lg font-medium transition-all duration-200 hover:scale-105"
-                style={{ color: 'var(--text)' }}
+                className="px-4 py-2 text-lg font-medium transition-all duration-200 hover:scale-105 text-[var(--text)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--blue)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
               >
                 로그인
               </button>
@@ -167,15 +160,6 @@ export default function AppBar({ className }: AppBarProps) {
           </div>
         </div>
       </header>
-      
-      {/* 토스트 알럿 */}
-      <Toast
-        message="개발중인 기능이에요! 조금만 기다려주세요😊"
-        type="success"
-        isVisible={showToast}
-        onClose={() => setShowToast(false)}
-        duration={3000}
-      />
     </>
   );
 }

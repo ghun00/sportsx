@@ -136,7 +136,7 @@ export default function Home() {
                 
                 {displayedArticles.length === 0 && (
                   <div className="text-center py-20">
-                    <p className="text-xl font-light" style={{ color: 'var(--muted)' }}>
+                    <p className="text-xl font-light" style={{ color: 'var(--text)' }}>
                       선택한 카테고리에 해당하는 아티클이 없습니다.
                     </p>
                   </div>
@@ -146,39 +146,6 @@ export default function Home() {
           </section>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t py-16" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="text-center">
-            
-            <p className="text-lg font-light" style={{ color: 'var(--muted)' }}>
-              해외 스포츠 산업의 흐름을 한국어로 읽다
-            </p>
-            
-            {/* 피드백 링크 */}
-            <div className="mt-6">
-              <a
-                href="https://sportsx.channel.io/home"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-4 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 rounded-lg"
-                style={{ 
-                  color: 'var(--blue)',
-                  backgroundColor: 'rgba(47, 128, 237, 0.1)',
-                  border: '1px solid rgba(47, 128, 237, 0.2)'
-                }}
-              >
-                💬 개선사항 피드백 보내기
-              </a>
-            </div>
-            
-            <p className="text-sm mt-4" style={{ color: 'var(--muted)', opacity: 0.7 }}>
-              &copy; 2025 스포츠엑스. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -56,8 +56,8 @@ export default function AdminUsersTab() {
         <h2 className="text-xl font-semibold mb-1" style={{ color: 'var(--text)' }}>
           사용자 목록
         </h2>
-        <p className="text-sm" style={{ color: 'var(--muted)' }}>
-          현재 {users.length}명의 사용자가 있습니다
+        <p className="text-sm" style={{ color: 'var(--text)' }}>
+          이메일/소셜 회원 정보를 확인합니다.
         </p>
       </div>
 
@@ -135,7 +135,7 @@ export default function AdminUsersTab() {
                         <div className="font-medium" style={{ color: 'var(--text)' }}>
                           {user.nickname}
                         </div>
-                        <div className="text-sm" style={{ color: 'var(--muted)' }}>
+                        <div className="text-sm" style={{ color: 'var(--text)' }}>
                           ID: {user.id}
                         </div>
                       </div>
@@ -145,7 +145,7 @@ export default function AdminUsersTab() {
                   {/* 이메일 */}
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4" style={{ color: 'var(--muted)' }} />
+                      <Mail className="w-4 h-4" style={{ color: 'var(--text)' }} />
                       <span style={{ color: 'var(--text)' }}>
                         {user.email || '이메일 없음'}
                       </span>
@@ -175,7 +175,7 @@ export default function AdminUsersTab() {
                   {/* 가입일 */}
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" style={{ color: 'var(--muted)' }} />
+                      <Calendar className="w-4 h-4" style={{ color: 'var(--text)' }} />
                       <span style={{ color: 'var(--text)' }}>
                         {formatDate(user.createdAt)}
                       </span>
@@ -221,13 +221,13 @@ export default function AdminUsersTab() {
         <div className="text-center py-20">
           <div className="mb-6">
             <div className="w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--panel)' }}>
-              <Users className="w-12 h-12" style={{ color: 'var(--muted)' }} />
+              <Users className="w-12 h-12" style={{ color: 'var(--text)' }} />
             </div>
             <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text)' }}>
               등록된 사용자가 없습니다
             </h3>
-            <p style={{ color: 'var(--muted)' }}>
-              아직 회원가입한 사용자가 없습니다
+            <p style={{ color: 'var(--text)' }}>
+              아직 등록된 사용자가 없습니다.
             </p>
           </div>
         </div>

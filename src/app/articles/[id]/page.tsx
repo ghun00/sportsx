@@ -191,7 +191,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             </h1>
 
           {/* 메타 정보 */}
-          <div className={`flex items-center space-x-4 text-sm mb-6 transition-all duration-500 delay-600 ${isPageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`} style={{ color: 'var(--muted)' }}>
+          <div className={`flex items-center space-x-4 text-sm mb-6 transition-all duration-500 delay-600 ${isPageLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`} style={{ color: 'var(--text)' }}>
             <span>{article.source}</span>
             <span>•</span>
             <time dateTime={article.published_at instanceof Date ? article.published_at.toISOString() : new Date(article.published_at).toISOString()}>
@@ -258,7 +258,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div className="mb-4 sm:mb-0">
                 <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--text)' }}>원문 보기</h3>
-                <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                <p className="text-sm" style={{ color: 'var(--text)' }}>
                   이 아티클의 원문을 {article.source}에서 확인하세요.
                 </p>
               </div>
@@ -280,7 +280,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
       {/* Footer */}
       <footer className="border-t py-8 mt-16" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--panel)' }}>
         <div className="container mx-auto px-6 lg:px-8">
-          <div className="text-center" style={{ color: 'var(--muted)' }}>
+          <div className="text-center" style={{ color: 'var(--text)' }}>
             <p>&copy; 2025 스포츠엑스. 해외 스포츠 산업의 흐름을 한국어로 읽다.</p>
           </div>
         </div>

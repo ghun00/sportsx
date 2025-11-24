@@ -18,12 +18,10 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
   useEffect(() => {
     if (isOpen) {
       setIsVisible(true);
-      // 배경 애니메이션이 시작된 후 콘텐츠 애니메이션 시작
       setTimeout(() => setIsContentVisible(true), 100);
-      document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+      document.body.style.overflow = 'hidden';
     } else {
       setIsContentVisible(false);
-      // 콘텐츠 애니메이션이 끝난 후 배경 애니메이션 시작
       setTimeout(() => setIsVisible(false), 200);
       document.body.style.overflow = 'unset';
     }
@@ -51,132 +49,87 @@ export default function LoginPopup({ isOpen, onClose }: LoginPopupProps) {
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className={cn(
-        'fixed inset-0 z-50',
-        'bg-black/50 backdrop-blur-sm transition-opacity duration-300',
-        'flex items-center justify-center',
+        'fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 flex items-center justify-center px-4',
         isVisible ? 'opacity-100' : 'opacity-0'
       )}
-      style={{
-        padding: '16px',
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        overflow: 'hidden',
-        boxSizing: 'border-box'
-      }}
       onClick={handleBackdropClick}
     >
-      {/* 통합 팝업 - 모바일/데스크톱 모두 동일 */}
-      <div 
+      <div
         className={cn(
-          'relative',
-          'bg-[#091926] rounded-2xl border border-slate-700 shadow-2xl',
-          'transition-all duration-300 transform',
-          'max-w-sm sm:max-w-lg',
+          'relative w-full max-w-sm sm:max-w-md mx-auto rounded-3xl border border-[#1B3042] bg-[#091926] shadow-2xl transition-all duration-300 transform overflow-hidden',
           isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
         )}
-        style={{
-          width: '100%',
-          maxHeight: 'calc(100vh - 32px)',
-          boxSizing: 'border-box',
-          overflow: 'hidden'
-        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 팝업 내용 */}
-        <div className="p-4 sm:p-8" style={{
-          boxSizing: 'border-box',
-          width: '100%',
-          overflow: 'hidden'
-        }}>
-          {/* 호랑이 캐릭터 */}
-          <div className="text-center" style={{ marginBottom: '16px' }}>
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 text-white/60 hover:text-white transition-colors rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F7BFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#091926]"
+          aria-label="로그인 팝업 닫기"
+        >
+          ✕
+        </button>
+
+        <div className="p-8 sm:p-10">
+          <div className="flex justify-center mb-6">
             <Image
               src="https://github.com/ghun00/sportsx/blob/main/public/tiger.png?raw=true"
-              alt="Tiger Character"
-              width={220}
-              height={220}
+              alt="스포츠엑스 마스코트"
+              width={180}
+              height={180}
               className={cn(
-                "mx-auto object-contain transition-all duration-500",
-                "w-full max-w-[180px] sm:max-w-[220px]",
-                isContentVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                'transition-all duration-500',
+                isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
               )}
-              style={{ 
-                transitionDelay: '200ms',
-                height: 'auto',
-                marginBottom: '16px'
-              }}
+              priority
             />
-            
-            {/* 텍스트 */}
-            <div style={{ marginBottom: '24px' }}>
-              <p 
-                className={cn(
-                  "font-bold transition-all duration-500",
-                  "text-lg sm:text-xl md:text-3xl",
-                  "text-center leading-tight break-words",
-                  isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                )}
-                style={{ 
-                  color: 'var(--text)',
-                  lineHeight: '1.2',
-                  marginBottom: '8px',
-                  transitionDelay: '300ms'
-                }}
-              >
-                스포츠 커리어 성장을 위한 지식허브
-              </p>
-              <p 
-                className={cn(
-                  "transition-all duration-500",
-                  "text-sm sm:text-base md:text-xl",
-                  "text-center leading-relaxed break-words",
-                  isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                )}
-                style={{ 
-                  color: 'var(--muted)',
-                  lineHeight: '1.4',
-                  transitionDelay: '400ms'
-                }}
-              >
-                맞춤형 콘텐츠로, 스포츠 커리어 성장을 가속하세요
-              </p>
-            </div>
-
-            {/* 카카오 로그인 버튼 */}
-            <button
-              onClick={handleKakaoLogin}
-              disabled={isLoading}
-              className={cn(
-                "w-full flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-500 hover:scale-105 active:scale-95",
-                isContentVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95',
-                isLoading && 'opacity-70 cursor-not-allowed'
-              )}
-              style={{
-                backgroundColor: '#FEE500',
-                color: '#000000',
-                padding: '16px 14px',
-                fontSize: '16px',
-                transitionDelay: '500ms',
-                boxSizing: 'border-box',
-                maxWidth: '100%'
-              }}
-            >
-              <Image
-                src="https://github.com/ghun00/sportsx/blob/main/public/kakao.png?raw=true"
-                alt="Kakao"
-                width={16}
-                height={16}
-                style={{ width: '16px', height: '16px' }}
-              />
-              <span>
-                {isLoading ? '로그인 중...' : '카카오 로그인'}
-              </span>
-            </button>
           </div>
+
+          <div className="text-center space-y-3 mb-8">
+            <h2
+              className={cn(
+                'text-2xl sm:text-3xl font-bold tracking-tight text-white',
+                isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'
+              )}
+            >
+              스포츠 커리어 성장을 위한 지식허브
+            </h2>
+            <p
+              className={cn(
+                'text-sm sm:text-base leading-6 text-white/70',
+                isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'
+              )}
+            >
+              맞춤형 콘텐츠로, 스포츠 커리어 성장을 가속하세요
+            </p>
+          </div>
+
+          <button
+            onClick={handleKakaoLogin}
+            disabled={isLoading}
+            className={cn(
+              'w-full flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F7BFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#091926]',
+              isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1',
+              isLoading ? 'cursor-not-allowed opacity-80' : 'hover:scale-[1.02]'
+            )}
+            style={{
+              backgroundColor: '#FEE500',
+              color: '#111827',
+              padding: '16px 14px',
+              fontSize: '16px',
+            }}
+          >
+            <Image
+              src="https://github.com/ghun00/sportsx/blob/main/public/kakao.png?raw=true"
+              alt="카카오"
+              width={18}
+              height={18}
+              className="object-contain"
+            />
+            {isLoading ? '로그인 중...' : '카카오 로그인'}
+          </button>
         </div>
       </div>
     </div>

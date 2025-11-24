@@ -104,7 +104,7 @@ function KakaoCallbackContent() {
           <>
             <div className="text-green-400 text-4xl mb-4">✓</div>
             <p className="text-[var(--text)] text-lg">{message}</p>
-            <p className="text-[var(--muted)] text-sm mt-2">잠시 후 홈으로 이동합니다...</p>
+            <p className="text-[var(--text)]/80 text-sm mt-2">잠시 후 홈으로 이동합니다...</p>
           </>
         )}
         

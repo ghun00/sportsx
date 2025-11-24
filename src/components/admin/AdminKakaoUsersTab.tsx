@@ -93,8 +93,8 @@ export default function AdminKakaoUsersTab() {
             <h2 className="text-xl font-semibold mb-1" style={{ color: 'var(--text)' }}>
               카카오 유저 정보
             </h2>
-            <p className="text-sm" style={{ color: 'var(--muted)' }}>
-              카카오 REST API를 통해 조회한 사용자 정보 ({totalCount}명)
+            <p className="text-sm" style={{ color: 'var(--text)' }}>
+              카카오 로그인 사용자 목록입니다.
             </p>
           </div>
           <button
@@ -168,7 +168,7 @@ export default function AdminKakaoUsersTab() {
                         <div className="font-medium" style={{ color: 'var(--text)' }}>
                           {user.firebase_data?.nickname || user.properties.nickname}
                         </div>
-                        <div className="text-sm" style={{ color: 'var(--muted)' }}>
+                        <div className="text-sm" style={{ color: 'var(--text)' }}>
                           ID: {user.id}
                         </div>
                       </div>
@@ -216,13 +216,13 @@ export default function AdminKakaoUsersTab() {
         <div className="text-center py-20">
           <div className="mb-6">
             <div className="w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--panel)' }}>
-              <User className="w-12 h-12" style={{ color: 'var(--muted)' }} />
+              <User className="w-12 h-12" style={{ color: 'var(--text)' }} />
             </div>
             <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text)' }}>
               카카오 사용자 정보가 없습니다
             </h3>
-            <p style={{ color: 'var(--muted)' }}>
-              카카오 REST API를 통해 사용자 정보를 가져올 수 없습니다
+            <p style={{ color: 'var(--text)' }}>
+              아직 카카오로 로그인한 사용자가 없습니다.
             </p>
           </div>
         </div>

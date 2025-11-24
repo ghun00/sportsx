@@ -27,6 +27,10 @@ export interface GA4Event {
     question?: string;
     value?: string;
     status?: string;
+    target?: string;
+    id?: string;
+    logged_in?: 'true' | 'false';
+    source?: string;
   };
 }
 
@@ -384,6 +388,66 @@ export const trackFirebaseError = (errorMessage: string) =>
   analytics.trackFirebaseError(errorMessage);
 export const trackPageLoadTime = (loadTime: number) => 
   analytics.trackPageLoadTime(loadTime);
+
+// 추천 공고 관련 이벤트
+export const trackNavClick = (target: 'feed' | 'jobs' | 'assistant') =>
+  analytics.trackEvent({
+    event_name: 'nav_click',
+    event_category: 'navigation',
+    custom_parameters: { target },
+  });
+
+export const trackJobsViewed = (category: 'job' | 'activity') =>
+  analytics.trackEvent({
+    event_name: 'jobs_viewed',
+    event_category: 'jobs',
+    custom_parameters: { category },
+  });
+
+export const trackJobsSortChanged = (value: 'latest' | 'deadline' | 'views') =>
+  analytics.trackEvent({
+    event_name: 'jobs_sort_changed',
+    event_category: 'jobs',
+    custom_parameters: { value },
+  });
+
+export const trackJobCardClicked = (id: string) =>
+  analytics.trackEvent({
+    event_name: 'job_card_clicked',
+    event_category: 'jobs',
+    custom_parameters: { id },
+  });
+
+export const trackJobSavedClicked = (id: string, loggedIn: boolean) =>
+  analytics.trackEvent({
+    event_name: 'job_saved_clicked',
+    event_category: 'jobs',
+    custom_parameters: {
+      id,
+      logged_in: loggedIn ? 'true' : 'false',
+    },
+  });
+
+export const trackLoginPromptShown = (source: 'jobs_save' | 'general') =>
+  analytics.trackEvent({
+    event_name: 'login_prompt_shown',
+    event_category: 'authentication',
+    custom_parameters: { source },
+  });
+
+export const trackSaveSuccess = (id: string) =>
+  analytics.trackEvent({
+    event_name: 'save_success',
+    event_category: 'jobs',
+    custom_parameters: { id },
+  });
+
+export const trackSavedDrawerOpened = () =>
+  analytics.trackEvent({
+    event_name: 'saved_drawer_opened',
+    event_category: 'jobs',
+    event_label: 'career_saved_drawer',
+  });
 
 // 온보딩 관련 편의 함수들
 export const trackOnboardingShown = (reason: string) => 

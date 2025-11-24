@@ -68,13 +68,13 @@ export default function ArticleCard({ article, className, showSummary = true }: 
           
           {/* 요약 */}
           {showSummary && (
-            <p className="text-md leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
+            <p className="text-md leading-relaxed line-clamp-2" style={{ color: 'var(--text)' }}>
               {article.summary_kr.join(' • ')}
             </p>
           )}
           
           {/* 하단 정보 */}
-          <div className="flex items-center space-x-3 text-xs" style={{ color: 'var(--muted)' }}>
+          <div className="flex items-center space-x-3 text-xs" style={{ color: 'var(--text)' }}>
             <span>{article.source}</span>
             <span>•</span>
             <span>{formatPublishedDate(article.published_at instanceof Date ? article.published_at.toISOString() : article.published_at)}</span>

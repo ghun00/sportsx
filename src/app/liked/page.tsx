@@ -66,7 +66,7 @@ export default function LikedArticlesPage() {
             <h1 className="text-2xl font-bold mb-4" style={{ color: 'var(--text)' }}>
               로그인이 필요합니다
             </h1>
-            <p style={{ color: 'var(--muted)' }}>
+            <p style={{ color: 'var(--text)' }}>
               좋아요한 게시물을 보려면 로그인해주세요.
             </p>
           </div>
@@ -107,7 +107,7 @@ export default function LikedArticlesPage() {
             <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--text)' }}>
               아직 좋아요한 게시물이 없습니다
             </h2>
-            <p style={{ color: 'var(--muted)' }}>
+            <p style={{ color: 'var(--text)' }}>
               마음에 드는 아티클에 하트를 눌러보세요!
             </p>
           </div>

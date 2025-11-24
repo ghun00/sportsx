@@ -55,8 +55,8 @@ export default function AdminArticlesPage() {
             <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>
               아티클 관리
             </h1>
-            <p style={{ color: 'var(--muted)' }}>
-              현재 {articles.length}개의 아티클이 있습니다
+            <p style={{ color: 'var(--text)' }}>
+              신규 아티클을 작성해보세요.
             </p>
           </div>
           
@@ -127,7 +127,7 @@ export default function AdminArticlesPage() {
                   {/* 요약 */}
                   <div className="mb-3">
                     {article.summary_kr.slice(0, 2).map((summary: string, index: number) => (
-                      <p key={index} className="text-sm line-clamp-1 mb-1" style={{ color: 'var(--muted)' }}>
+                      <p key={index} className="text-sm line-clamp-1 mb-1" style={{ color: 'var(--text)' }}>
                         • {summary}
                       </p>
                     ))}
@@ -137,13 +137,13 @@ export default function AdminArticlesPage() {
                   <div className="space-y-2">
                     {/* 출처 */}
                     <div className="flex items-center gap-2 text-sm">
-                      <span style={{ color: 'var(--muted)' }}>출처:</span>
+                      <span style={{ color: 'var(--text)' }}>출처:</span>
                       <span style={{ color: 'var(--text)' }}>{article.source}</span>
                     </div>
 
                     {/* 카테고리 */}
                     <div className="flex items-center gap-2 flex-wrap">
-                      <Tag className="w-4 h-4" style={{ color: 'var(--muted)' }} />
+                      <Tag className="w-4 h-4" style={{ color: 'var(--text)' }} />
                       {article.categories.map((category: string, index: number) => (
                         <span
                           key={index}
@@ -160,8 +160,8 @@ export default function AdminArticlesPage() {
 
                     {/* 발행일 */}
                     <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4" style={{ color: 'var(--muted)' }} />
-                      <span style={{ color: 'var(--muted)' }}>
+                      <Calendar className="w-4 h-4" style={{ color: 'var(--text)' }} />
+                      <span style={{ color: 'var(--text)' }}>
                         {formatDate(article.published_at)}
                       </span>
                     </div>
@@ -174,12 +174,12 @@ export default function AdminArticlesPage() {
           <div className="text-center py-20">
             <div className="mb-6">
               <div className="w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--panel)' }}>
-                <Edit className="w-12 h-12" style={{ color: 'var(--muted)' }} />
+                <Edit className="w-12 h-12" style={{ color: 'var(--text)' }} />
               </div>
               <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text)' }}>
-                아직 아티클이 없습니다
+                등록된 아티클이 없습니다
               </h3>
-              <p style={{ color: 'var(--muted)' }}>
+              <p style={{ color: 'var(--text)' }}>
                 첫 번째 아티클을 생성해보세요!
               </p>
             </div>

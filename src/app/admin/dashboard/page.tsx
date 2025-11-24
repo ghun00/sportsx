@@ -45,8 +45,8 @@ export default function AdminDashboardPage() {
             <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>
               관리자 대시보드
             </h1>
-            <p style={{ color: 'var(--muted)' }}>
-              아티클과 사용자를 관리할 수 있습니다
+            <p style={{ color: 'var(--text)' }}>
+              운영 현황을 빠르게 확인하세요.
             </p>
           </div>
 

@@ -27,18 +27,20 @@ export default function Toast({ message, type, isVisible, onClose, duration = 30
   return (
     <div 
       className={cn(
-        'fixed top-4 left-4 right-4 z-50',
-        'px-6 py-4 rounded-xl shadow-lg',
-        'transition-all duration-300 transform',
+        'fixed top-4 left-4 right-4 z-50 px-6 py-4 rounded-xl border border-[var(--border)] shadow-lg transition-all duration-300 transform backdrop-blur-sm',
         isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
       )}
       style={{
-        backgroundColor: type === 'success' ? '#10B981' : '#EF4444',
-        color: 'white'
+        backgroundColor: 'var(--panel)',
+        color: 'var(--text)',
+        boxShadow: '0 18px 40px rgba(0, 0, 0, 0.45)'
       }}
     >
       <div className="flex items-center gap-3">
-        <div className="text-lg">
+        <div
+          className="text-lg"
+          style={{ color: type === 'success' ? 'var(--blue)' : 'var(--alert)' }}
+        >
           {type === 'success' ? '✓' : '✗'}
         </div>
         <span className="font-medium">{message}</span>

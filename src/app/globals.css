@@ -3,13 +3,18 @@
 
 /* 스포츠엑스 프리미엄 컬러 토큰 */
 :root {
-  --bg: #0F0F0F;
-  --panel: #1A1A1A;
-  --text: #FFFFFF;
-  --muted: #8B8B8B;
-  --blue: #3B82F6;
-  --border: #2A2A2A;
+  --bg: #0D0F12;
+  --panel: #14171B;
+  --panel-hover: #1B1F24;
+  --text: #F5F7FA;
+  --muted: #9AA4AF;
+  --blue: #2F7BFF;
+  --warn: #F3B500;
+  --alert: #FF4D4F;
+  --neutral: #7C838C;
+  --border: #2A2F36;
   --radius: 0.75rem;
+  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
 /* 다크 테마 기본 적용 */
@@ -31,11 +36,11 @@ html, body {
   --primary-foreground: #ffffff;
   --secondary: var(--panel);
   --secondary-foreground: var(--text);
-  --muted: var(--muted);
+  --muted: var(--panel);
   --muted-foreground: var(--muted);
-  --accent: var(--blue);
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  --accent: var(--panel-hover);
+  --accent-foreground: var(--text);
+  --destructive: var(--alert);
   --destructive-foreground: #ffffff;
   --border: var(--border);
   --input: var(--border);

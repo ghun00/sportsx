@@ -98,3 +98,23 @@ export interface PaginatedResponse<T> {
   lastDoc?: unknown;
   total?: number;
 }
+
+export type JobType = 'job' | 'activity';
+
+export interface JobItem {
+  id: string;
+  type: JobType;
+  org_name: string;
+  title: string;
+  thumbnail_url: string | null;
+  deadline_date: string;
+  d_day: number | null;
+  is_active: boolean;
+  created_at: string;
+  views: number;
+  saved: boolean;
+  external_url?: string;
+  reward_label?: string;
+  location?: string;
+  experience_range?: string;
+}

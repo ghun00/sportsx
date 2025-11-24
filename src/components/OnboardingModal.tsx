@@ -232,8 +232,8 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                 <h2 className="text-2xl font-bold mb-8 text-center" style={{ color: 'var(--text)' }}>
                   어떤 분야에 관심이 있으신가요?
                 </h2>
-                <p className="text-sm text-center mb-6" style={{ color: 'var(--muted)' }}>
-                  (복수 선택 가능)
+                <p className="text-sm text-center mb-6" style={{ color: 'var(--text)' }}>
+                  아직 정보를 입력하지 않았어요. 맞춤 추천을 위해 간단한 질문에 답해주세요.
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {INTERESTS.map((interest) => (
@@ -384,8 +384,8 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                 <h2 className="text-xl font-bold mb-6 text-center" style={{ color: 'var(--text)' }}>
                   어떤 분야에 관심이 있으신가요?
                 </h2>
-                <p className="text-sm text-center mb-4" style={{ color: 'var(--muted)' }}>
-                  (복수 선택 가능)
+                <p className="text-sm text-center mb-4" style={{ color: 'var(--text)' }}>
+                  맞춤형 콘텐츠를 위해 마지막으로 확인할게요.
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {INTERESTS.map((interest) => (
